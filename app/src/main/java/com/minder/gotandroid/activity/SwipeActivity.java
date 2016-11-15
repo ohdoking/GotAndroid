@@ -1,4 +1,4 @@
-package com.minder.gotandroid.list;
+package com.minder.gotandroid.activity;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -11,6 +11,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
@@ -32,6 +34,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,15 +52,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.minder.gotandroid.R;
-import com.minder.gotandroid.activity.SettingActivity;
-import com.minder.gotandroid.activity.SplashActivity2;
-import com.minder.gotandroid.activity.WriteActivity;
 import com.minder.gotandroid.db.MyDB;
 import com.minder.gotandroid.dialog.DialogActivity;
 import com.minder.gotandroid.dto.Dream;
+import com.minder.gotandroid.list.ListAdapter;
+import com.minder.gotandroid.list.ListViewSwipeGesture;
 import com.minder.gotandroid.model.AlarmReceiver;
 import com.minder.gotandroid.model.GPSTracker;
 import com.minder.gotandroid.model.PushEvent;
+import com.skp.Tmap.TMapMarkerItem;
+import com.skp.Tmap.TMapMarkerItem2;
+import com.skp.Tmap.TMapPoint;
+import com.skp.Tmap.TMapTapi;
+import com.skp.Tmap.TMapView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -107,14 +114,22 @@ public class SwipeActivity extends Activity {
 	private InputMethodManager imm;
 	GPSTracker gpsTracker;
 
+
 	private PendingIntent pendingIntent;
 
 	private BackPressCloseHandler backPressCloseHandler;
+
+	//	add tmap
+	LinearLayout contentView;
+	TMapView tmapview;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_swipe);
+
+		contentView  = (LinearLayout)findViewById(R.id.dummyLayout);
 
 		Intent alarmIntent = new Intent(SwipeActivity.this, AlarmReceiver.class);
 		pendingIntent = PendingIntent.getBroadcast(SwipeActivity.this, 0,
@@ -122,10 +137,10 @@ public class SwipeActivity extends Activity {
 		startAt10();
 		db = new MyDB(getApplicationContext());
 
-		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
-				.getMap();
-
-		map.setMyLocationEnabled(true);
+//		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
+//				.getMap();
+//
+//		map.setMyLocationEnabled(true);
 
 		// testApi();
 		imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -263,6 +278,74 @@ public class SwipeActivity extends Activity {
 
 		chkGpsService();
 
+
+		//		tmap
+
+		tmapview = new TMapView(this);
+		tmapview.setSKPMapApiKey(getResources().getString(R.string.t_map_key));
+
+		contentView.removeAllViews();
+		contentView.addView(tmapview, new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT));
+
+		gpsTracker = new GPSTracker(getApplicationContext());
+		Location location = gpsTracker.getLocation();
+		tmapview.setTrackingMode(true);
+
+		TMapMarkerItem tMapMarkerItem2 = new TMapMarkerItem();
+		TMapPoint tpoint = new TMapPoint(37.570841, 126.985302);
+		tMapMarkerItem2.setTMapPoint(tpoint);
+		Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.mapicon2);
+		tMapMarkerItem2.setIcon(bitmap);
+		tMapMarkerItem2.setID("test");
+		tMapMarkerItem2.setPosition(0.5f,1.0f);
+		tMapMarkerItem2.setCanShowCallout(true);
+		tMapMarkerItem2.setName("testName");
+
+
+		tMapMarkerItem2.setCalloutTitle("titlewhat");
+		tMapMarkerItem2.setCalloutSubTitle("titlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhat");
+		tMapMarkerItem2.setCalloutLeftImage(bitmap);
+		tMapMarkerItem2.setCalloutRightButtonImage(bitmap);
+
+		tmapview.setCenterPoint(126.985302, 37.570841, true);
+
+		tmapview.addMarkerItem("id", tMapMarkerItem2);
+
+		tmapview.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonClickCallback() {
+			@Override
+			public void onCalloutRightButton(TMapMarkerItem markerItem) {
+
+				Log.i("test","adfasfafafafda");
+			}
+		});
+
+		TMapTapi tmaptapi = new TMapTapi(this);
+		tmaptapi.setSKPMapAuthentication(getResources().getString(R.string.t_map_key));
+
+		tmaptapi.setOnAuthenticationListener(new TMapTapi.OnAuthenticationListenerCallback() {
+			@Override
+			public void SKPMapApikeySucceed() {
+				Log.i("tes111t","success!!@#@!#!@#!@#@");
+			}
+
+			@Override
+			public void SKPMapApikeyFailed(String s) {
+				Log.i("test111","fail@!@#!@#!@ESFSDF");
+			}
+		});
+		tmaptapi.invokeRoute("고대", (float)location.getLatitude(), (float)location.getLongitude());
+
+
+//		for(int i = 0; i < 10; i++){
+//			TMapMarkerItem2 tMapMarkerItem2 = new TMapMarkerItem2();
+//			TMapPoint tpoint = new TMapPoint(location.getLatitude(),
+//					location.getLongitude());
+//			tMapMarkerItem2.setID(i+"");
+////			tMapMarkerItem2.setIcon(BitmapFactory.decodeResource(getResources(),R.drawable.mapicon1));
+//			tMapMarkerItem2.setTMapPoint(tpoint);
+//			Log.i("test","ohsokdfakajflakfasdf" + location.getLatitude() + " : " + location.getLongitude());
+//			tmapview.addMarkerItem2(i+"", tMapMarkerItem2);
+//		}
 	}
 
 	// onoff ���� �˸�
@@ -357,24 +440,31 @@ public class SwipeActivity extends Activity {
 
 					LatLng tempLatLng = new LatLng(dream.getLat(),
 							dream.getLon());
-					Marker marker = map.addMarker(new MarkerOptions()
-							.position(tempLatLng).title(dream.getTodo())
-							.snippet(dream.getMemo())
-							.icon(BitmapDescriptorFactory.fromResource(id)));
+//					Marker marker = map.addMarker(new MarkerOptions()
+//							.position(tempLatLng).title(dream.getTodo())
+//							.snippet(dream.getMemo())
+//							.icon(BitmapDescriptorFactory.fromResource(id)));
+//
+//					markerList.put(dream.getId(), marker);
 
-					markerList.put(dream.getId(), marker);
+					TMapMarkerItem2 markeritem2 = new TMapMarkerItem2();
+					markeritem2.setIcon(BitmapFactory.decodeResource(getResources(),id));
 
+					tmapview.addMarkerItem2(dream.getId().toString(), markeritem2);
 				}
 			}
+
 
 			Location location = gpsTracker.getLocation();
 			if (location != null) {
 
 				LatLng moveLatLng = new LatLng(location.getLatitude(),
 						location.getLongitude());
-				map.moveCamera(CameraUpdateFactory
-						.newLatLngZoom(moveLatLng, 10));
-				map.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
+//				map.moveCamera(CameraUpdateFactory
+//						.newLatLngZoom(moveLatLng, 10));
+//				map.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
+				tmapview.setTrackingMode(true);
+
 			}
 
 			/*
@@ -385,6 +475,9 @@ public class SwipeActivity extends Activity {
 			 * .icon(BitmapDescriptorFactory
 			 * .fromResource(R.drawable.ic_launcher)));
 			 */
+
+
+
 
 			map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
 
@@ -488,7 +581,7 @@ public class SwipeActivity extends Activity {
 
 		db = new MyDB(getApplicationContext());
 		InitializeValues();
-		initMap();
+//		initMap();
 		listAdapter.notifyDataSetChanged();
 		if (cmn_list_view.getCount() == 0) {
 			addtutorial.setVisibility(View.VISIBLE);

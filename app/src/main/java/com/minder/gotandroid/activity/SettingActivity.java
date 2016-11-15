@@ -29,7 +29,6 @@ import com.minder.gotandroid.api.NullApiManager;
 import com.minder.gotandroid.api.SeoulApiManager;
 import com.minder.gotandroid.db.MyDB;
 import com.minder.gotandroid.gps.GpsInfo;
-import com.minder.gotandroid.list.SwipeActivity;
 
 import java.io.IOException;
 import java.util.List;

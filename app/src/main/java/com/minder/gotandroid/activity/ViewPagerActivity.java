@@ -1,6 +1,5 @@
 package com.minder.gotandroid.activity;
 import com.minder.gotandroid.R;
-import com.minder.gotandroid.list.SwipeActivity;
 
 import android.app.Activity;
 import android.content.Context;
