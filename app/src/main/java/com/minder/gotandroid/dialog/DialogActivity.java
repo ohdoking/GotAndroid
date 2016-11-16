@@ -77,25 +77,25 @@ public class DialogActivity extends Activity implements OnClickListener {
 		cat5 = (ImageButton) findViewById(R.id.cate5);
 
 		for (String category : list) {
-			if (category.equals("����")) {
+			if (category.equals("food")) {
 				cat1.setImageResource(R.drawable.writeicon1);
-				categoryList.add("����");
+				categoryList.add("food");
 				categoryId1 = 0;
-			} else if (category.equals("����")) {
+			} else if (category.equals("event")) {
 				cat2.setImageResource(R.drawable.writeicon2);
-				categoryList.add("����");
+				categoryList.add("event");
 				categoryId2 = 0;
-			} else if (category.equals("Ȱ��")) {
+			} else if (category.equals("festival")) {
 				cat3.setImageResource(R.drawable.writeicon3);
-				categoryList.add("Ȱ��");
+				categoryList.add("festival");
 				categoryId3 = 0;
-			} else if (category.equals("�� ��")) {
+			} else if (category.equals("tour")) {
 				cat4.setImageResource(R.drawable.writeicon4);
-				categoryList.add("�� ��");
+				categoryList.add("tour");
 				categoryId4 = 0;
-			} else if (category.equals("��Ÿ")) {
+			} else if (category.equals("etc")) {
 				cat5.setImageResource(R.drawable.writeicon5);
-				categoryList.add("��Ÿ");
+				categoryList.add("etc");
 				categoryId5 = 0;
 			}
 		}
@@ -143,11 +143,11 @@ public class DialogActivity extends Activity implements OnClickListener {
 	private Set getPreferences() {
 		SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
 		Set<String> hash = new HashSet<String>();
-		hash.add("����");
-		hash.add("�� ��");
-		hash.add("����");
-		hash.add("��Ÿ");
-		hash.add("Ȱ��");
+		hash.add("food");
+		hash.add("festival");
+		hash.add("tour");
+		hash.add("etc");
+		hash.add("event");
 
 		return pref.getStringSet("categoryList", hash);
 	}
@@ -170,77 +170,77 @@ public class DialogActivity extends Activity implements OnClickListener {
 	public void onClick(View v) {
 
 		switch (v.getId()) {
-		case R.id.cate1:
-			category = "����";
-			if (categoryId1 == 0) {
-				cat1.setImageResource(R.drawable.inactive1);
-				categoryId1 = 1;
-				categoryList.remove(category);
-			} else {
-				cat1.setImageResource(R.drawable.writeicon1);
-				categoryId1 = 0;
-				categoryList.add(category);
-			}
+			case R.id.cate1:
+				category = "food";
+				if (categoryId1 == 0) {
+					cat1.setImageResource(R.drawable.inactive1);
+					categoryId1 = 1;
+					categoryList.remove(category);
+				} else {
+					cat1.setImageResource(R.drawable.writeicon1);
+					categoryId1 = 0;
+					categoryList.add(category);
+				}
 
-			check = 1;
-			Toast.makeText(DialogActivity.this, "����", Toast.LENGTH_SHORT).show();
-			break;
-		case R.id.cate2:
-			category = "����";
-			if (categoryId2 == 0) {
-				cat2.setImageResource(R.drawable.inactive2);
-				categoryId2 = 2;
-				categoryList.remove(category);
-			} else {
-				cat2.setImageResource(R.drawable.writeicon2);
-				categoryId2 = 0;
-				categoryList.add(category);
-			}
-			check = 2;
-			Toast.makeText(DialogActivity.this, "����", Toast.LENGTH_SHORT).show();
-			break;
-		case R.id.cate3:
-			category = "Ȱ��";
-			if (categoryId3 == 0) {
-				cat3.setImageResource(R.drawable.inactive3);
-				categoryId3 = 3;
-				categoryList.remove(category);
-			} else {
-				cat3.setImageResource(R.drawable.writeicon3);
-				categoryId3 = 0;
-				categoryList.add(category);
-			}
-			check = 3;
-			Toast.makeText(DialogActivity.this, "����", Toast.LENGTH_SHORT).show();
-			break;
-		case R.id.cate4:
-			category = "�� ��";
-			if (categoryId4 == 0) {
-				cat4.setImageResource(R.drawable.inactive4);
-				categoryId4 = 4;
-				categoryList.remove(category);
-			} else {
-				cat4.setImageResource(R.drawable.writeicon4);
-				categoryId4 = 0;
-				categoryList.add(category);
-			}
-			check = 4;
-			Toast.makeText(DialogActivity.this, "����", Toast.LENGTH_SHORT).show();
-			break;
-		case R.id.cate5:
-			category = "��Ÿ";
-			if (categoryId5 == 0) {
-				cat5.setImageResource(R.drawable.inactive5);
-				categoryId5 = 5;
-				categoryList.remove(category);
-			} else {
-				cat5.setImageResource(R.drawable.writeicon5);
-				categoryId5 = 0;
-				categoryList.add(category);
-			}
-			check = 5;
-			Toast.makeText(DialogActivity.this, "��Ÿ", Toast.LENGTH_SHORT).show();
-			break;
+				check = 1;
+				Toast.makeText(DialogActivity.this, "food", Toast.LENGTH_SHORT).show();
+				break;
+			case R.id.cate2:
+				category = "event";
+				if (categoryId2 == 0) {
+					cat2.setImageResource(R.drawable.inactive2);
+					categoryId2 = 2;
+					categoryList.remove(category);
+				} else {
+					cat2.setImageResource(R.drawable.writeicon2);
+					categoryId2 = 0;
+					categoryList.add(category);
+				}
+				check = 2;
+				Toast.makeText(DialogActivity.this, "event", Toast.LENGTH_SHORT).show();
+				break;
+			case R.id.cate3:
+				category = "festival";
+				if (categoryId3 == 0) {
+					cat3.setImageResource(R.drawable.inactive3);
+					categoryId3 = 3;
+					categoryList.remove(category);
+				} else {
+					cat3.setImageResource(R.drawable.writeicon3);
+					categoryId3 = 0;
+					categoryList.add(category);
+				}
+				check = 3;
+				Toast.makeText(DialogActivity.this, "festival", Toast.LENGTH_SHORT).show();
+				break;
+			case R.id.cate4:
+				category = "tour";
+				if (categoryId4 == 0) {
+					cat4.setImageResource(R.drawable.inactive4);
+					categoryId4 = 4;
+					categoryList.remove(category);
+				} else {
+					cat4.setImageResource(R.drawable.writeicon4);
+					categoryId4 = 0;
+					categoryList.add(category);
+				}
+				check = 4;
+				Toast.makeText(DialogActivity.this, "tour", Toast.LENGTH_SHORT).show();
+				break;
+			case R.id.cate5:
+				category = "etc";
+				if (categoryId5 == 0) {
+					cat5.setImageResource(R.drawable.inactive5);
+					categoryId5 = 5;
+					categoryList.remove(category);
+				} else {
+					cat5.setImageResource(R.drawable.writeicon5);
+					categoryId5 = 0;
+					categoryList.add(category);
+				}
+				check = 5;
+				Toast.makeText(DialogActivity.this, "etc", Toast.LENGTH_SHORT).show();
+				break;
 		}
 
 	}

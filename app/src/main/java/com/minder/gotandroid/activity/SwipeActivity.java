@@ -326,6 +326,7 @@ public class SwipeActivity extends Activity {
 	}
 
 	public void initMap() {
+
 		if (tmapview != null) {
 
 			gpsTracker = new GPSTracker(getApplicationContext());
@@ -724,6 +725,9 @@ public class SwipeActivity extends Activity {
 					listdata.clear();
 					listdata.addAll(db.getDreamCate(newText));
 					listAdapter.notifyDataSetChanged();
+
+
+					initMap();
 				}
 				break;
 			}
