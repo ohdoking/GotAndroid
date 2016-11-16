@@ -2,6 +2,8 @@ package com.minder.gotandroid.activity;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.logging.LogManager;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -39,6 +41,9 @@ import com.minder.gotandroid.db.MyDB;
 import com.minder.gotandroid.dialog.DialogActivity;
 import com.minder.gotandroid.dto.Dream;
 import com.minder.gotandroid.write.PlaceAutocompleteAdapter;
+import com.skp.Tmap.TMapData;
+import com.skp.Tmap.TMapPOIItem;
+import com.skp.Tmap.TMapView;
 
 import android.app.ActionBar;
 import android.app.ActionBar.LayoutParams;
@@ -122,6 +127,14 @@ public class WriteActivity extends SampleActivityBase
 	static final LatLng SEOUL = new LatLng(37.56, 126.97);
 	private GoogleMap map;
 
+//	tmap
+
+	TMapView tmapview;
+	RelativeLayout contentView;
+
+	TMapData tmapdata;
+
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -180,9 +193,18 @@ public class WriteActivity extends SampleActivityBase
 
 		db = new MyDB(getApplicationContext());
 
-		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
-		map.moveCamera(CameraUpdateFactory.newLatLngZoom(SEOUL, 10));
-		map.animateCamera(CameraUpdateFactory.zoomTo(10), 1000, null);
+//		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
+//		map.moveCamera(CameraUpdateFactory.newLatLngZoom(SEOUL, 10));
+//		map.animateCamera(CameraUpdateFactory.zoomTo(10), 1000, null);
+
+		tmapview = new TMapView(this);
+		tmapview.setSKPMapApiKey(getResources().getString(R.string.t_map_key));
+
+		tmapdata = new TMapData();
+
+		contentView  = (RelativeLayout) findViewById(R.id.tmapLayout);
+		contentView.removeAllViews();
+		contentView.addView(tmapview, new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT));
 
 		// Retrieve the AutoCompleteTextView that will display Place
 		// suggestions.
@@ -225,7 +247,7 @@ public class WriteActivity extends SampleActivityBase
 		cat5.setOnClickListener(this);
 
 		// �� Ŭ��������
-		map.setOnMapClickListener(this);
+//		map.setOnMapClickListener(this);
 
 		animation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
 		slideUp_animation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
@@ -250,8 +272,8 @@ public class WriteActivity extends SampleActivityBase
 			lat = dream.getLat();
 			lon = dream.getLon();
 
-			map.moveCamera(CameraUpdateFactory.newLatLngZoom(moveLatLng, 15));
-			map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+//			map.moveCamera(CameraUpdateFactory.newLatLngZoom(moveLatLng, 15));
+//			map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
 
 			todoEt.setText(dream.getTodo().toString());
 			mAutocompleteView.setText(dream.getLocation().toString());
@@ -449,33 +471,33 @@ public class WriteActivity extends SampleActivityBase
 			}
 		});
 
-		transparentImageView = (ImageView) findViewById(R.id.transparent_image);
-		transparentImageView.setOnTouchListener(new View.OnTouchListener() {
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				int action = event.getAction();
-				switch (action) {
-				case MotionEvent.ACTION_DOWN:
-					// Disallow ScrollView to intercept touch events.
-					mainScrollView.requestDisallowInterceptTouchEvent(true);
-					// Disable touch on transparent view
-					return false;
-
-				case MotionEvent.ACTION_UP:
-					// Allow ScrollView to intercept touch events.
-					mainScrollView.requestDisallowInterceptTouchEvent(false);
-					return true;
-
-				case MotionEvent.ACTION_MOVE:
-					mainScrollView.requestDisallowInterceptTouchEvent(true);
-					return false;
-
-				default:
-					return true;
-				}
-			}
-		});
+//		transparentImageView = (ImageView) findViewById(R.id.transparent_image);
+//		transparentImageView.setOnTouchListener(new View.OnTouchListener() {
+//
+//			@Override
+//			public boolean onTouch(View v, MotionEvent event) {
+//				int action = event.getAction();
+//				switch (action) {
+//				case MotionEvent.ACTION_DOWN:
+//					// Disallow ScrollView to intercept touch events.
+//					mainScrollView.requestDisallowInterceptTouchEvent(true);
+//					// Disable touch on transparent view
+//					return false;
+//
+//				case MotionEvent.ACTION_UP:
+//					// Allow ScrollView to intercept touch events.
+//					mainScrollView.requestDisallowInterceptTouchEvent(false);
+//					return true;
+//
+//				case MotionEvent.ACTION_MOVE:
+//					mainScrollView.requestDisallowInterceptTouchEvent(true);
+//					return false;
+//
+//				default:
+//					return true;
+//				}
+//			}
+//		});
 
 		// EditText Event
 		// EditText �� ���� �̺�Ʈ Ž��
@@ -488,13 +510,30 @@ public class WriteActivity extends SampleActivityBase
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before, int count) {
 				// �ؽ�Ʈ�� �����ɶ����� �߻��� �̺�Ʈ�� �ۼ�.
+				Log.i("test123123123",s.toString() +" : "+ mAutocompleteView.getText().toString());
 				if (todoEt.getText().length() > 0)
 					cancelBtn.setVisibility(View.VISIBLE);
 				else
 					cancelBtn.setVisibility(View.INVISIBLE);
 
-				if (mAutocompleteView.getText().toString().length() > 0)
+				if (mAutocompleteView.getText().toString().length() > 0){
+					try {
+						tmapdata.findAllPOI(s.toString(), new TMapData.FindAllPOIListenerCallback()
+						{
+							@Override
+							public void onFindAllPOI(ArrayList<TMapPOIItem> poiItem) {
+								for(int i = 0; i < poiItem.size(); i++) {
+									TMapPOIItem  item = poiItem.get(i);
+									Log.i("test123123123", "POI Name: " + item.getPOIName().toString() + ", " + "Address: " + item.getPOIAddress().replace("null", "")  + ", " + "Point: " + item.getPOIPoint().toString());
+								}
+							}
+						});
+//						Log.i("test123123123",POIItem.get(0).address.toString());
+					}catch (Exception e){
+						Log.i("ohdoking-error",e.getStackTrace().toString());
+					}
 					regionBtn.setVisibility(View.VISIBLE);
+				}
 				else
 					regionBtn.setVisibility(View.INVISIBLE);
 			}
@@ -566,7 +605,7 @@ public class WriteActivity extends SampleActivityBase
 	private AdapterView.OnItemClickListener mAutocompleteClickListener = new AdapterView.OnItemClickListener() {
 		@Override
 		public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-			map.clear();
+//			map.clear();
 			/*
 			 * Retrieve the place ID of the selected item from the Adapter. The
 			 * adapter stores each Place suggestion in a PlaceAutocomplete
@@ -760,14 +799,14 @@ public class WriteActivity extends SampleActivityBase
 		switch (v.getId()) {
 		case R.id.cat1:
 			try {
-				map.clear();
-				mark.remove();
+//				map.clear();
+//				mark.remove();
 			} catch (Exception e) {
 				Toast.makeText(getApplicationContext(), "������ �������ּ���.", Toast.LENGTH_LONG).show();
 			} finally {
 				category = "����";
 				BitmapDescriptor bmp = BitmapDescriptorFactory.fromResource(R.drawable.mapicon1);
-				mark = map.addMarker(new MarkerOptions().position(new LatLng(lat, lon)).title(location).icon(bmp));
+//				mark = map.addMarker(new MarkerOptions().position(new LatLng(lat, lon)).title(location).icon(bmp));
 				cat1.setImageResource(R.drawable.writeicon1);
 				cat2.setImageResource(R.drawable.inactive2);
 				cat3.setImageResource(R.drawable.inactive3);
@@ -777,14 +816,14 @@ public class WriteActivity extends SampleActivityBase
 			break;
 		case R.id.cat2:
 			try {
-				map.clear();
-				mark.remove();
+//				map.clear();
+//				mark.remove();
 			} catch (Exception e) {
 				Toast.makeText(getApplicationContext(), "������ �������ּ���.", Toast.LENGTH_LONG).show();
 			} finally {
 				category = "����";
 				BitmapDescriptor bmp2 = BitmapDescriptorFactory.fromResource(R.drawable.mapicon2);
-				mark = map.addMarker(new MarkerOptions().position(new LatLng(lat, lon)).title(location).icon(bmp2));
+//				mark = map.addMarker(new MarkerOptions().position(new LatLng(lat, lon)).title(location).icon(bmp2));
 				cat1.setImageResource(R.drawable.inactive1);
 				cat2.setImageResource(R.drawable.writeicon2);
 				cat3.setImageResource(R.drawable.inactive3);
@@ -795,14 +834,14 @@ public class WriteActivity extends SampleActivityBase
 
 		case R.id.cat3:
 			try {
-				map.clear();
-				mark.remove();
+//				map.clear();
+//				mark.remove();
 			} catch (Exception e) {
 				Toast.makeText(getApplicationContext(), "������ �������ּ���.", Toast.LENGTH_LONG).show();
 			} finally {
 				category = "Ȱ��";
 				BitmapDescriptor bmp3 = BitmapDescriptorFactory.fromResource(R.drawable.mapicon3);
-				mark = map.addMarker(new MarkerOptions().position(new LatLng(lat, lon)).title(location).icon(bmp3));
+//				mark = map.addMarker(new MarkerOptions().position(new LatLng(lat, lon)).title(location).icon(bmp3));
 				cat1.setImageResource(R.drawable.inactive1);
 				cat2.setImageResource(R.drawable.inactive2);
 				cat3.setImageResource(R.drawable.writeicon3);
@@ -812,14 +851,14 @@ public class WriteActivity extends SampleActivityBase
 			break;
 		case R.id.cat4:
 			try {
-				map.clear();
-				mark.remove();
+//				map.clear();
+//				mark.remove();
 			} catch (Exception e) {
 				Toast.makeText(getApplicationContext(), "������ �������ּ���.", Toast.LENGTH_LONG).show();
 			} finally {
 				category = "�� ��";
 				BitmapDescriptor bmp4 = BitmapDescriptorFactory.fromResource(R.drawable.mapicon4);
-				mark = map.addMarker(new MarkerOptions().position(new LatLng(lat, lon)).title(location).icon(bmp4));
+//				mark = map.addMarker(new MarkerOptions().position(new LatLng(lat, lon)).title(location).icon(bmp4));
 				cat1.setImageResource(R.drawable.inactive1);
 				cat2.setImageResource(R.drawable.inactive2);
 				cat3.setImageResource(R.drawable.inactive3);
@@ -829,14 +868,14 @@ public class WriteActivity extends SampleActivityBase
 			break;
 		case R.id.cat5:
 			try {
-				map.clear();
-				mark.remove();
+//				map.clear();
+//				mark.remove();
 			} catch (Exception e) {
 				Toast.makeText(getApplicationContext(), "������ �������ּ���.", Toast.LENGTH_LONG).show();
 			} finally {
 				category = "��Ÿ";
 				BitmapDescriptor bmp5 = BitmapDescriptorFactory.fromResource(R.drawable.mapicon5);
-				mark = map.addMarker(new MarkerOptions().position(new LatLng(lat, lon)).title(location).icon(bmp5));
+//				mark = map.addMarker(new MarkerOptions().position(new LatLng(lat, lon)).title(location).icon(bmp5));
 				cat1.setImageResource(R.drawable.inactive1);
 				cat2.setImageResource(R.drawable.inactive2);
 				cat3.setImageResource(R.drawable.inactive3);
@@ -860,7 +899,7 @@ public class WriteActivity extends SampleActivityBase
 	@Override
 	public void onMapClick(LatLng point) {
 		// TODO Auto-generated method stub
-		map.clear();
+//		map.clear();
 		lat = point.latitude;
 		lon = point.longitude;
 		// map.addMarker(new
