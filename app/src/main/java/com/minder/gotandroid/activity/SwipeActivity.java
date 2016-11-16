@@ -1,4 +1,4 @@
-package com.minder.gotandroid.list;
+package com.minder.gotandroid.activity;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -11,6 +11,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
@@ -32,6 +34,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,15 +52,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.minder.gotandroid.R;
-import com.minder.gotandroid.activity.SettingActivity;
-import com.minder.gotandroid.activity.SplashActivity2;
-import com.minder.gotandroid.activity.WriteActivity;
 import com.minder.gotandroid.db.MyDB;
 import com.minder.gotandroid.dialog.DialogActivity;
 import com.minder.gotandroid.dto.Dream;
+import com.minder.gotandroid.list.ListAdapter;
+import com.minder.gotandroid.list.ListViewSwipeGesture;
 import com.minder.gotandroid.model.AlarmReceiver;
 import com.minder.gotandroid.model.GPSTracker;
 import com.minder.gotandroid.model.PushEvent;
+import com.skp.Tmap.TMapMarkerItem;
+import com.skp.Tmap.TMapMarkerItem2;
+import com.skp.Tmap.TMapPoint;
+import com.skp.Tmap.TMapTapi;
+import com.skp.Tmap.TMapView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -107,14 +114,22 @@ public class SwipeActivity extends Activity {
 	private InputMethodManager imm;
 	GPSTracker gpsTracker;
 
+
 	private PendingIntent pendingIntent;
 
 	private BackPressCloseHandler backPressCloseHandler;
+
+	//	add tmap
+	LinearLayout contentView;
+	TMapView tmapview;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_swipe);
+
+		contentView  = (LinearLayout)findViewById(R.id.dummyLayout);
 
 		Intent alarmIntent = new Intent(SwipeActivity.this, AlarmReceiver.class);
 		pendingIntent = PendingIntent.getBroadcast(SwipeActivity.this, 0,
@@ -122,10 +137,10 @@ public class SwipeActivity extends Activity {
 		startAt10();
 		db = new MyDB(getApplicationContext());
 
-		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
-				.getMap();
-
-		map.setMyLocationEnabled(true);
+//		map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map))
+//				.getMap();
+//
+//		map.setMyLocationEnabled(true);
 
 		// testApi();
 		imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -232,37 +247,20 @@ public class SwipeActivity extends Activity {
 			}
 		});
 
-		// Move the camera instantly to hamburg with a zoom of 15.
-
-		// Zoom in, animating the camera.
-
-		// Locate the EditText in listview_main.xml
-
-		/*
-		 * EditText editText = new EditText(getApplicationContext());
-		 * getActionBar().setCustomView(editText);
-		 *
-		 * // Capture Text in EditText editsearch.addTextChangedListener(new
-		 * TextWatcher() {
-		 *
-		 * @Override public void afterTextChanged(Editable arg0) { // TODO
-		 * Auto-generated method stub String text =
-		 * editsearch.getText().toString().toLowerCase(Locale.getDefault());
-		 * listAdapter.filter(text); }
-		 *
-		 * @Override public void beforeTextChanged(CharSequence arg0, int arg1,
-		 * int arg2, int arg3) { // TODO Auto-generated method stub }
-		 *
-		 * @Override public void onTextChanged(CharSequence arg0, int arg1, int
-		 * arg2, int arg3) { // TODO Auto-generated method stub } });
-		 */
-
 		/*
 		 * gps check
 		 */
 
 		chkGpsService();
 
+		//		tmap init
+		tmapview = new TMapView(this);
+		tmapview.setSKPMapApiKey(getResources().getString(R.string.t_map_key));
+
+		contentView.removeAllViews();
+		contentView.addView(tmapview, new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT));
+
+		initMap();
 	}
 
 	// onoff ���� �˸�
@@ -328,124 +326,89 @@ public class SwipeActivity extends Activity {
 	}
 
 	public void initMap() {
-		if (map != null) {
+		if (tmapview != null) {
 
 			gpsTracker = new GPSTracker(getApplicationContext());
 
 			markerList = new HashMap<Integer, Marker>();
 
 			if (!listdata.isEmpty()) {
-				map.clear();
+				//@TODO clear add
 				for (Dream dream : listdata) {
 
 					int id = 0;
 
-					if (dream.getCategory().equals("����")) {
+					if (dream.getCategory().equals("food")) {
 						id = R.drawable.mapicon1;
-					} else if (dream.getCategory().equals("����")) {
+					} else if (dream.getCategory().equals("event")) {
 						id = R.drawable.mapicon2;
 
-					} else if (dream.getCategory().equals("Ȱ��")) {
+					} else if (dream.getCategory().equals("festival")) {
 
 						id = R.drawable.mapicon3;
-					} else if (dream.getCategory().equals("�� ��")) {
+					} else if (dream.getCategory().equals("tour")) {
 
 						id = R.drawable.mapicon4;
 					} else {
 						id = R.drawable.mapicon5;
 					}
 
-					LatLng tempLatLng = new LatLng(dream.getLat(),
-							dream.getLon());
-					Marker marker = map.addMarker(new MarkerOptions()
-							.position(tempLatLng).title(dream.getTodo())
-							.snippet(dream.getMemo())
-							.icon(BitmapDescriptorFactory.fromResource(id)));
+					Log.i("test123",dream.getLat()+"");
+					TMapMarkerItem markeritem2 = new TMapMarkerItem();
+					TMapPoint tpoint = new TMapPoint(dream.getLat(), dream.getLon());
+					markeritem2.setTMapPoint(tpoint);
+					Bitmap bitmap = BitmapFactory.decodeResource(getResources(),id);
+					markeritem2.setIcon(bitmap);
+					markeritem2.setID(dream.getId().toString());
+					markeritem2.setPosition(0.5f,1.0f);
+					markeritem2.setCanShowCallout(true);
+					markeritem2.setName(dream.getTodo());
 
-					markerList.put(dream.getId(), marker);
 
+					markeritem2.setCalloutTitle(dream.getTodo());
+					markeritem2.setCalloutSubTitle(dream.getMemo());
+					markeritem2.setCalloutLeftImage(bitmap);
+					markeritem2.setCalloutRightButtonImage(bitmap);
+
+
+
+
+					tmapview.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonClickCallback() {
+						@Override
+						public void onCalloutRightButton(TMapMarkerItem markerItem) {
+
+							if (getPreferencesCheck() == true) {
+								Uri uri = Uri
+										.parse("http://search.naver.com/search.naver?where=nexearch&query="
+												+ markerItem.getName().toString()
+												+ "&ie=utf8");
+
+								// ���̹� �� �ٷ� ����
+								// Uri uri =
+								// Uri.parse("naversearchapp://keywordsearch?mode=result&query="+marker.getTitle().toString()+"&version=10");
+								Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+								startActivity(intent);
+							} else {
+								showLoginDialog(markerItem.getName().toString());
+							}
+						}
+					});
+
+					tmapview.addMarkerItem(dream.getId().toString(), markeritem2);
 				}
 			}
 
 			Location location = gpsTracker.getLocation();
 			if (location != null) {
+				// Current Location
+				tmapview.setCenterPoint(location.getLongitude(), location.getLatitude(), true);
+				tmapview.setTrackingMode(true);
 
-				LatLng moveLatLng = new LatLng(location.getLatitude(),
-						location.getLongitude());
-				map.moveCamera(CameraUpdateFactory
-						.newLatLngZoom(moveLatLng, 10));
-				map.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
 			}
-
-			/*
-			 * Marker hamburg = map.addMarker(new MarkerOptions()
-			 * .position(HAMBURG).title("Hamburg"));
-			 */
-			/*
-			 * .icon(BitmapDescriptorFactory
-			 * .fromResource(R.drawable.ic_launcher)));
-			 */
-
-			map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-
-				@Override
-				public void onInfoWindowClick(Marker marker) {
-					// TODO Auto-generated method stub
-					if (getPreferencesCheck() == true) {
-						// ���� �˻�
-						// Uri uri =
-						// Uri.parse("http://www.google.com/#q="+marker.getTitle().toString());
-						// ���̹� �˻�
-						Uri uri = Uri
-								.parse("http://search.naver.com/search.naver?where=nexearch&query="
-										+ marker.getTitle().toString()
-										+ "&ie=utf8");
-
-						// ���̹� �� �ٷ� ����
-						// Uri uri =
-						// Uri.parse("naversearchapp://keywordsearch?mode=result&query="+marker.getTitle().toString()+"&version=10");
-						Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-						startActivity(intent);
-					} else {
-						showLoginDialog(marker.getTitle().toString());
-					}
-				}
-			});
 		}
-
 	}
 
 	private void InitializeValues() {
-		// TODO Auto-generated method stub
-
-		/*
-		 * for (Dream dream : listdata) { }
-		 */
-		/*
-		 * listdata.add(new dumpclass("one"));
-		 * listdata.add(newdumpclass("two")); listdata.add(new
-		 * dumpclass("three")); listdata.add(new dumpclass("four"));
-		 * listdata.add(new dumpclass("five")); listdata.add(new
-		 * dumpclass("six")); listdata.add(new dumpclass("seven"));
-		 * listdata.add(new dumpclass("Eight"));
-		 */
-
-		// listdata.add(new dumpclass("���� ã�� ����","����"));
-
-		/*
-		 * for (int i = 0; i < db.getAllDreams().size(); i++) {
-		 *
-		 * listdata.add(new
-		 * dumpclass(db.getDream(i).getTodo().toString(),db.getDream
-		 * (i).getCategory().toString()));
-		 *
-		 * }
-		 */
-
-		/*
-		 * listdata = db.getAllDreams(); listAdapter = new ListAdapter(this,
-		 * listdata); cmn_list_view.setAdapter(listAdapter);
-		 */
 
 		Set<String> hashset = getPreferences();
 
@@ -465,11 +428,11 @@ public class SwipeActivity extends Activity {
 	private Set getPreferences() {
 		SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
 		Set<String> hash = new HashSet<String>();
-		hash.add("����");
-		hash.add("�� ��");
-		hash.add("����");
-		hash.add("��Ÿ");
-		hash.add("Ȱ��");
+		hash.add("tour");
+		hash.add("festival");
+		hash.add("event");
+		hash.add("food");
+		hash.add("etc");
 
 		return pref.getStringSet("categoryList", hash);
 	}
@@ -488,7 +451,7 @@ public class SwipeActivity extends Activity {
 
 		db = new MyDB(getApplicationContext());
 		InitializeValues();
-		initMap();
+//		initMap();
 		listAdapter.notifyDataSetChanged();
 		if (cmn_list_view.getCount() == 0) {
 			addtutorial.setVisibility(View.VISIBLE);
@@ -735,24 +698,19 @@ public class SwipeActivity extends Activity {
 
 		@Override
 		public void OnClickListView(int position) {
-			// TODO Auto-generated method stub
-			// startActivity(new Intent(getApplicationContext(),
-			// TestActivity.class));
 			dummyLayer.setVisibility(View.VISIBLE);
 			imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
 			Dream dream = db.getDreamId(listdata.get(position).getId());
 			LatLng moveLatLng = new LatLng(dream.getLat(), dream.getLon());
-			map.moveCamera(CameraUpdateFactory.newLatLngZoom(moveLatLng, 15));
-			map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
 
-			Marker marker = markerList.get(dream.getId());
-			marker.showInfoWindow();
-
+			//@TODO map move
+//			tmapview.moveTo((float)dream.getLat(),(float)dream.getLon());
+			tmapview.setCenterPoint(dream.getLon(), dream.getLat(), true);
 		}
 	};
 
 	/*
-	 * ���̾��α� ���� ó��
+	 * acitivity finish
 	 */
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -786,160 +744,6 @@ public class SwipeActivity extends Activity {
 				break;
 			}
 		}
-	}
-
-	/*
-	 * ListViewSwipeGesture.TouchCallbacks swipeListener = new
-	 * ListViewSwipeGesture.TouchCallbacks() {
-	 *
-	 * @Override public void FullSwipeListView(int position) { // TODO
-	 * Auto-generated method stub Toast.makeText(getApplicationContext(), "����",
-	 * Toast.LENGTH_SHORT).show(); }
-	 *
-	 * @Override public void HalfSwipeListView(int position) { // TODO
-	 * Auto-generated method stub Toast.makeText(getApplicationContext(), "����",
-	 * Toast.LENGTH_SHORT).show(); }
-	 *
-	 * @Override public void LoadDataForScroll(int count) { // TODO
-	 * Auto-generated method stub
-	 *
-	 * }
-	 *
-	 * @Override public void onDismiss(ListView listView, int[]
-	 * reverseSortedPositions) { // TODO Auto-generated method stub
-	 * Toast.makeText(getApplicationContext(), "Delete",
-	 * Toast.LENGTH_SHORT).show(); for (int i : reverseSortedPositions) {
-	 * listdata.remove(i); listAdapter.notifyDataSetChanged(); } }
-	 *
-	 * @Override public void OnClickListView(int position) { // TODO
-	 * Auto-generated method stub
-	 *
-	 * }
-	 *
-	 * };
-	 */
-
-	/*
-	 * test api
-	 */
-
-	public void testApi() {
-		String key = "kbOUead1jRb3%2BIJz3Z%2FFfYQQrTXxsxZhBxIhgIjeA3WXM83aAUGiPiUHefz3G7QObpRxaZnffelPT8oNMLcH1g%3D%3D";
-		String serviceKey;
-		String count = "30";
-
-		pDialog = new ProgressDialog(this);
-		pDialog.setMessage("���ø� ���ٷ��ּ���.");
-		pDialog.setCancelable(false);
-
-		showpDialog();
-
-		db.deleteTable();
-
-		try {
-			serviceKey = URLEncoder.encode(key, "UTF-8");
-
-			String urlTour = " http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?"
-					+ "ServiceKey="
-					+ key
-					+ "&arrange=B"
-					+ "&contentTypeId=12"
-					+ "&areaCode=1"
-					+ "&numOfRows="
-					+ count
-					+ "&pageNo=1"
-					+ "&MobileOS=AND" + "&MobileApp=ohdoking" + "&_type=json";
-
-			String urlFestival = " http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?"
-					+ "ServiceKey="
-					+ key
-					+ "&arrange=B"
-					+ "&contentTypeId=15"
-					+ "&areaCode=1"
-					+ "&numOfRows=60"
-					+ "&pageNo=1"
-					+ "&MobileOS=AND" + "&MobileApp=ohdoking" + "&_type=json";
-
-			String urlFood = " http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?"
-					+ "ServiceKey="
-					+ key
-					+ "&arrange=B"
-					+ "&contentTypeId=39"
-					+ "&areaCode=1"
-					+ "&numOfRows="
-					+ count
-					+ "&pageNo=1"
-					+ "&MobileOS=AND" + "&MobileApp=ohdoking" + "&_type=json";
-
-			JsonObjectRequest jsonRequestTour = new JsonObjectRequest(
-					Request.Method.GET, urlTour, null,
-					new Response.Listener<JSONObject>() {
-
-						@Override
-						public void onResponse(JSONObject response) {
-							// the response is already constructed as a
-							// JSONObject!
-
-							inputApiResult(response);
-
-						}
-					}, new Response.ErrorListener() {
-
-				@Override
-				public void onErrorResponse(VolleyError error) {
-					error.printStackTrace();
-					hidepDialog();
-				}
-			});
-
-			JsonObjectRequest jsonRequestFestival = new JsonObjectRequest(
-					Request.Method.GET, urlFestival, null,
-					new Response.Listener<JSONObject>() {
-
-						@Override
-						public void onResponse(JSONObject response) {
-							// the response is already constructed as a
-							// JSONObject!
-
-							inputApiResult(response);
-
-						}
-					}, new Response.ErrorListener() {
-
-				@Override
-				public void onErrorResponse(VolleyError error) {
-					error.printStackTrace();
-				}
-			});
-
-			JsonObjectRequest jsonRequestFood = new JsonObjectRequest(
-					Request.Method.GET, urlFood, null,
-					new Response.Listener<JSONObject>() {
-
-						@Override
-						public void onResponse(JSONObject response) {
-							// the response is already constructed as a
-							// JSONObject!
-							inputApiResult(response);
-
-						}
-					}, new Response.ErrorListener() {
-
-				@Override
-				public void onErrorResponse(VolleyError error) {
-					error.printStackTrace();
-				}
-			});
-
-			Volley.newRequestQueue(this).add(jsonRequestFestival);
-			Volley.newRequestQueue(this).add(jsonRequestFood);
-			Volley.newRequestQueue(this).add(jsonRequestTour);
-
-		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
 	}
 
 	void inputApiResult(JSONObject response) {
@@ -999,15 +803,15 @@ public class SwipeActivity extends Activity {
 
 	String checkCategory(String c) {
 		if (c.equals("A0502")) {
-			return "����";
+			return "food";
 		} else if (c.equals("A0208")) {
-			return "����"; // �̼�
+			return "event"; // �̼�
 		} else if (c.equals("A0207")) {
-			return "Ȱ��"; // ����
+			return "festival"; // ����
 		} else if (c.equals("A0201") || c.equals("A0202") || c.equals("A0205")) {
-			return "�� ��"; // ������
+			return "tour"; // ������
 		} else {
-			return "��Ÿ";
+			return "etc";
 		}
 	}
 

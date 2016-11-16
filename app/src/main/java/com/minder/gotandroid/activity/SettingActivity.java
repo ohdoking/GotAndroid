@@ -27,9 +27,9 @@ import com.minder.gotandroid.R;
 import com.minder.gotandroid.api.ApiManager;
 import com.minder.gotandroid.api.NullApiManager;
 import com.minder.gotandroid.api.SeoulApiManager;
+import com.minder.gotandroid.api.SeoulEngApiManager;
 import com.minder.gotandroid.db.MyDB;
 import com.minder.gotandroid.gps.GpsInfo;
-import com.minder.gotandroid.list.SwipeActivity;
 
 import java.io.IOException;
 import java.util.List;
@@ -207,8 +207,8 @@ public class SettingActivity extends Activity {
 
 					if (getMylogcation() == null) {
 						apiManager = new NullApiManager();
-					} else if (getMylogcation().equals("����Ư����") || getMylogcation().equals("Seoul")) {
-						apiManager = new SeoulApiManager(SettingActivity.this, 1);
+					} else if (getMylogcation().equals("서울특별시") || getMylogcation().equals("Seoul")) {
+						apiManager = new SeoulEngApiManager(SettingActivity.this, 1);
 					}
 					apiManager.getApi();
 				}

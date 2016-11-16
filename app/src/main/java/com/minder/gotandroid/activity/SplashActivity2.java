@@ -28,6 +28,7 @@ import com.minder.gotandroid.R;
 import com.minder.gotandroid.api.ApiManager;
 import com.minder.gotandroid.api.NullApiManager;
 import com.minder.gotandroid.api.SeoulApiManager;
+import com.minder.gotandroid.api.SeoulEngApiManager;
 import com.minder.gotandroid.gps.GpsInfo;
 
 
@@ -45,16 +46,13 @@ public class SplashActivity2 extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_activity2);
         
-        //api�� �ޱ��� �ϸ� api�� �޴´�.
-        
-        
 
         if(getUsingApi() == true){
         	if(getMylogcation() == null){
         		apiManager = new NullApiManager();
         	}
-	        else if(getMylogcation().equals("����Ư����") || getMylogcation().equals("Seoul")){
-	        	apiManager = new SeoulApiManager(getApplicationContext(),0);
+	        else if(getMylogcation().equals("서울특별시") || getMylogcation().equals("Seoul")){
+	        	apiManager = new SeoulEngApiManager(getApplicationContext(),0);
 	        }
 	        apiManager.getApi();
 	        
@@ -71,9 +69,7 @@ public class SplashActivity2 extends Activity {
         		R.drawable.loading_app_2,
         		R.drawable.loading_app_3
         };
-        
-        
-        
+
         
         bg = (ImageView)findViewById(R.id.splash_title);
         final Handler handler = new Handler();

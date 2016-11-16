@@ -24,7 +24,7 @@ import android.widget.Toast;
 import com.minder.gotandroid.R;
 import com.minder.gotandroid.db.MyDB;
 import com.minder.gotandroid.dto.Dream;
-import com.minder.gotandroid.list.SwipeActivity;
+import com.minder.gotandroid.activity.SwipeActivity;
 
 public class PushEvent extends Service {
 	private static final String TAG = "BOOMBOOMTESTGPS";
