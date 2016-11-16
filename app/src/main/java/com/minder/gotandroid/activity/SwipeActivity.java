@@ -247,90 +247,20 @@ public class SwipeActivity extends Activity {
 			}
 		});
 
-		// Move the camera instantly to hamburg with a zoom of 15.
-
-		// Zoom in, animating the camera.
-
-		// Locate the EditText in listview_main.xml
-
-		/*
-		 * EditText editText = new EditText(getApplicationContext());
-		 * getActionBar().setCustomView(editText);
-		 *
-		 * // Capture Text in EditText editsearch.addTextChangedListener(new
-		 * TextWatcher() {
-		 *
-		 * @Override public void afterTextChanged(Editable arg0) { // TODO
-		 * Auto-generated method stub String text =
-		 * editsearch.getText().toString().toLowerCase(Locale.getDefault());
-		 * listAdapter.filter(text); }
-		 *
-		 * @Override public void beforeTextChanged(CharSequence arg0, int arg1,
-		 * int arg2, int arg3) { // TODO Auto-generated method stub }
-		 *
-		 * @Override public void onTextChanged(CharSequence arg0, int arg1, int
-		 * arg2, int arg3) { // TODO Auto-generated method stub } });
-		 */
-
 		/*
 		 * gps check
 		 */
 
 		chkGpsService();
 
-
-		//		tmap
-
+		//		tmap init
 		tmapview = new TMapView(this);
 		tmapview.setSKPMapApiKey(getResources().getString(R.string.t_map_key));
-//
+
 		contentView.removeAllViews();
 		contentView.addView(tmapview, new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT));
 
 		initMap();
-//		gpsTracker = new GPSTracker(getApplicationContext());
-//		Location location = gpsTracker.getLocation();
-//		tmapview.setTrackingMode(true);
-////
-//		TMapMarkerItem tMapMarkerItem2 = new TMapMarkerItem();
-//		TMapPoint tpoint = new TMapPoint(37.570841, 126.985302);
-//		tMapMarkerItem2.setTMapPoint(tpoint);
-//		Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.mapicon2);
-//		tMapMarkerItem2.setIcon(bitmap);
-//		tMapMarkerItem2.setID("test");
-//		tMapMarkerItem2.setPosition(0.5f,1.0f);
-//		tMapMarkerItem2.setCanShowCallout(true);
-//		tMapMarkerItem2.setName("testName");
-//
-//
-//		tMapMarkerItem2.setCalloutTitle("titlewhat");
-//		tMapMarkerItem2.setCalloutSubTitle("titlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhat");
-//		tMapMarkerItem2.setCalloutLeftImage(bitmap);
-//		tMapMarkerItem2.setCalloutRightButtonImage(bitmap);
-//
-//		tmapview.setCenterPoint(126.985302, 37.570841, true);
-//
-//		tmapview.addMarkerItem("id", tMapMarkerItem2);
-//
-//		tmapview.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonClickCallback() {
-//			@Override
-//			public void onCalloutRightButton(TMapMarkerItem markerItem) {
-//
-//				Log.i("test","adfasfafafafda");
-//			}
-//		});
-
-
-//		for(int i = 0; i < 10; i++){
-//			TMapMarkerItem2 tMapMarkerItem2 = new TMapMarkerItem2();
-//			TMapPoint tpoint = new TMapPoint(location.getLatitude(),
-//					location.getLongitude());
-//			tMapMarkerItem2.setID(i+"");
-////			tMapMarkerItem2.setIcon(BitmapFactory.decodeResource(getResources(),R.drawable.mapicon1));
-//			tMapMarkerItem2.setTMapPoint(tpoint);
-//			Log.i("test","ohsokdfakajflakfasdf" + location.getLatitude() + " : " + location.getLongitude());
-//			tmapview.addMarkerItem2(i+"", tMapMarkerItem2);
-//		}
 	}
 
 	// onoff ���� �˸�
@@ -774,7 +704,8 @@ public class SwipeActivity extends Activity {
 			LatLng moveLatLng = new LatLng(dream.getLat(), dream.getLon());
 
 			//@TODO map move
-			tmapview.moveTo((float)dream.getLat(),(float)dream.getLon());
+//			tmapview.moveTo((float)dream.getLat(),(float)dream.getLon());
+			tmapview.setCenterPoint(dream.getLon(), dream.getLat(), true);
 		}
 	};
 
