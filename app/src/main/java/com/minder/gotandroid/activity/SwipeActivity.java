@@ -283,57 +283,42 @@ public class SwipeActivity extends Activity {
 
 		tmapview = new TMapView(this);
 		tmapview.setSKPMapApiKey(getResources().getString(R.string.t_map_key));
-
+//
 		contentView.removeAllViews();
 		contentView.addView(tmapview, new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT));
 
-		gpsTracker = new GPSTracker(getApplicationContext());
-		Location location = gpsTracker.getLocation();
-		tmapview.setTrackingMode(true);
-
-		TMapMarkerItem tMapMarkerItem2 = new TMapMarkerItem();
-		TMapPoint tpoint = new TMapPoint(37.570841, 126.985302);
-		tMapMarkerItem2.setTMapPoint(tpoint);
-		Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.mapicon2);
-		tMapMarkerItem2.setIcon(bitmap);
-		tMapMarkerItem2.setID("test");
-		tMapMarkerItem2.setPosition(0.5f,1.0f);
-		tMapMarkerItem2.setCanShowCallout(true);
-		tMapMarkerItem2.setName("testName");
-
-
-		tMapMarkerItem2.setCalloutTitle("titlewhat");
-		tMapMarkerItem2.setCalloutSubTitle("titlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhat");
-		tMapMarkerItem2.setCalloutLeftImage(bitmap);
-		tMapMarkerItem2.setCalloutRightButtonImage(bitmap);
-
-		tmapview.setCenterPoint(126.985302, 37.570841, true);
-
-		tmapview.addMarkerItem("id", tMapMarkerItem2);
-
-		tmapview.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonClickCallback() {
-			@Override
-			public void onCalloutRightButton(TMapMarkerItem markerItem) {
-
-				Log.i("test","adfasfafafafda");
-			}
-		});
-
-		TMapTapi tmaptapi = new TMapTapi(this);
-		tmaptapi.setSKPMapAuthentication(getResources().getString(R.string.t_map_key));
-
-		tmaptapi.setOnAuthenticationListener(new TMapTapi.OnAuthenticationListenerCallback() {
-			@Override
-			public void SKPMapApikeySucceed() {
-				Log.i("tes111t","success!!@#@!#!@#!@#@");
-			}
-
-			@Override
-			public void SKPMapApikeyFailed(String s) {
-				Log.i("test111","fail@!@#!@#!@ESFSDF");
-			}
-		});
-		tmaptapi.invokeRoute("고대", (float)location.getLatitude(), (float)location.getLongitude());
+		initMap();
+//		gpsTracker = new GPSTracker(getApplicationContext());
+//		Location location = gpsTracker.getLocation();
+//		tmapview.setTrackingMode(true);
+////
+//		TMapMarkerItem tMapMarkerItem2 = new TMapMarkerItem();
+//		TMapPoint tpoint = new TMapPoint(37.570841, 126.985302);
+//		tMapMarkerItem2.setTMapPoint(tpoint);
+//		Bitmap bitmap = BitmapFactory.decodeResource(getResources(),R.drawable.mapicon2);
+//		tMapMarkerItem2.setIcon(bitmap);
+//		tMapMarkerItem2.setID("test");
+//		tMapMarkerItem2.setPosition(0.5f,1.0f);
+//		tMapMarkerItem2.setCanShowCallout(true);
+//		tMapMarkerItem2.setName("testName");
+//
+//
+//		tMapMarkerItem2.setCalloutTitle("titlewhat");
+//		tMapMarkerItem2.setCalloutSubTitle("titlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhattitlewhat");
+//		tMapMarkerItem2.setCalloutLeftImage(bitmap);
+//		tMapMarkerItem2.setCalloutRightButtonImage(bitmap);
+//
+//		tmapview.setCenterPoint(126.985302, 37.570841, true);
+//
+//		tmapview.addMarkerItem("id", tMapMarkerItem2);
+//
+//		tmapview.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonClickCallback() {
+//			@Override
+//			public void onCalloutRightButton(TMapMarkerItem markerItem) {
+//
+//				Log.i("test","adfasfafafafda");
+//			}
+//		});
 
 
 //		for(int i = 0; i < 10; i++){
@@ -411,134 +396,89 @@ public class SwipeActivity extends Activity {
 	}
 
 	public void initMap() {
-		if (map != null) {
+		if (tmapview != null) {
 
 			gpsTracker = new GPSTracker(getApplicationContext());
 
 			markerList = new HashMap<Integer, Marker>();
 
 			if (!listdata.isEmpty()) {
-				map.clear();
+				//@TODO clear add
 				for (Dream dream : listdata) {
 
 					int id = 0;
 
-					if (dream.getCategory().equals("����")) {
+					if (dream.getCategory().equals("food")) {
 						id = R.drawable.mapicon1;
-					} else if (dream.getCategory().equals("����")) {
+					} else if (dream.getCategory().equals("event")) {
 						id = R.drawable.mapicon2;
 
-					} else if (dream.getCategory().equals("Ȱ��")) {
+					} else if (dream.getCategory().equals("festival")) {
 
 						id = R.drawable.mapicon3;
-					} else if (dream.getCategory().equals("�� ��")) {
+					} else if (dream.getCategory().equals("tour")) {
 
 						id = R.drawable.mapicon4;
 					} else {
 						id = R.drawable.mapicon5;
 					}
 
-					LatLng tempLatLng = new LatLng(dream.getLat(),
-							dream.getLon());
-//					Marker marker = map.addMarker(new MarkerOptions()
-//							.position(tempLatLng).title(dream.getTodo())
-//							.snippet(dream.getMemo())
-//							.icon(BitmapDescriptorFactory.fromResource(id)));
-//
-//					markerList.put(dream.getId(), marker);
+					Log.i("test123",dream.getLat()+"");
+					TMapMarkerItem markeritem2 = new TMapMarkerItem();
+					TMapPoint tpoint = new TMapPoint(dream.getLat(), dream.getLon());
+					markeritem2.setTMapPoint(tpoint);
+					Bitmap bitmap = BitmapFactory.decodeResource(getResources(),id);
+					markeritem2.setIcon(bitmap);
+					markeritem2.setID(dream.getId().toString());
+					markeritem2.setPosition(0.5f,1.0f);
+					markeritem2.setCanShowCallout(true);
+					markeritem2.setName(dream.getTodo());
 
-					TMapMarkerItem2 markeritem2 = new TMapMarkerItem2();
-					markeritem2.setIcon(BitmapFactory.decodeResource(getResources(),id));
 
-					tmapview.addMarkerItem2(dream.getId().toString(), markeritem2);
+					markeritem2.setCalloutTitle(dream.getTodo());
+					markeritem2.setCalloutSubTitle(dream.getMemo());
+					markeritem2.setCalloutLeftImage(bitmap);
+					markeritem2.setCalloutRightButtonImage(bitmap);
+
+
+
+
+					tmapview.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonClickCallback() {
+						@Override
+						public void onCalloutRightButton(TMapMarkerItem markerItem) {
+
+							if (getPreferencesCheck() == true) {
+								Uri uri = Uri
+										.parse("http://search.naver.com/search.naver?where=nexearch&query="
+												+ markerItem.getName().toString()
+												+ "&ie=utf8");
+
+								// ���̹� �� �ٷ� ����
+								// Uri uri =
+								// Uri.parse("naversearchapp://keywordsearch?mode=result&query="+marker.getTitle().toString()+"&version=10");
+								Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+								startActivity(intent);
+							} else {
+								showLoginDialog(markerItem.getName().toString());
+							}
+						}
+					});
+
+					tmapview.addMarkerItem(dream.getId().toString(), markeritem2);
 				}
 			}
-
 
 			Location location = gpsTracker.getLocation();
 			if (location != null) {
-
-				LatLng moveLatLng = new LatLng(location.getLatitude(),
-						location.getLongitude());
-//				map.moveCamera(CameraUpdateFactory
-//						.newLatLngZoom(moveLatLng, 10));
-//				map.animateCamera(CameraUpdateFactory.zoomTo(14), 2000, null);
+				// Current Location
+				tmapview.setCenterPoint(location.getLongitude(), location.getLatitude(), true);
 				tmapview.setTrackingMode(true);
 
 			}
-
-			/*
-			 * Marker hamburg = map.addMarker(new MarkerOptions()
-			 * .position(HAMBURG).title("Hamburg"));
-			 */
-			/*
-			 * .icon(BitmapDescriptorFactory
-			 * .fromResource(R.drawable.ic_launcher)));
-			 */
-
-
-
-
-			map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
-
-				@Override
-				public void onInfoWindowClick(Marker marker) {
-					// TODO Auto-generated method stub
-					if (getPreferencesCheck() == true) {
-						// ���� �˻�
-						// Uri uri =
-						// Uri.parse("http://www.google.com/#q="+marker.getTitle().toString());
-						// ���̹� �˻�
-						Uri uri = Uri
-								.parse("http://search.naver.com/search.naver?where=nexearch&query="
-										+ marker.getTitle().toString()
-										+ "&ie=utf8");
-
-						// ���̹� �� �ٷ� ����
-						// Uri uri =
-						// Uri.parse("naversearchapp://keywordsearch?mode=result&query="+marker.getTitle().toString()+"&version=10");
-						Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-						startActivity(intent);
-					} else {
-						showLoginDialog(marker.getTitle().toString());
-					}
-				}
-			});
 		}
-
 	}
 
 	private void InitializeValues() {
-		// TODO Auto-generated method stub
-
-		/*
-		 * for (Dream dream : listdata) { }
-		 */
-		/*
-		 * listdata.add(new dumpclass("one"));
-		 * listdata.add(newdumpclass("two")); listdata.add(new
-		 * dumpclass("three")); listdata.add(new dumpclass("four"));
-		 * listdata.add(new dumpclass("five")); listdata.add(new
-		 * dumpclass("six")); listdata.add(new dumpclass("seven"));
-		 * listdata.add(new dumpclass("Eight"));
-		 */
-
-		// listdata.add(new dumpclass("���� ã�� ����","����"));
-
-		/*
-		 * for (int i = 0; i < db.getAllDreams().size(); i++) {
-		 *
-		 * listdata.add(new
-		 * dumpclass(db.getDream(i).getTodo().toString(),db.getDream
-		 * (i).getCategory().toString()));
-		 *
-		 * }
-		 */
-
-		/*
-		 * listdata = db.getAllDreams(); listAdapter = new ListAdapter(this,
-		 * listdata); cmn_list_view.setAdapter(listAdapter);
-		 */
 
 		Set<String> hashset = getPreferences();
 
@@ -558,11 +498,11 @@ public class SwipeActivity extends Activity {
 	private Set getPreferences() {
 		SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
 		Set<String> hash = new HashSet<String>();
-		hash.add("����");
-		hash.add("�� ��");
-		hash.add("����");
-		hash.add("��Ÿ");
-		hash.add("Ȱ��");
+		hash.add("tour");
+		hash.add("festival");
+		hash.add("event");
+		hash.add("food");
+		hash.add("etc");
 
 		return pref.getStringSet("categoryList", hash);
 	}
@@ -828,24 +768,18 @@ public class SwipeActivity extends Activity {
 
 		@Override
 		public void OnClickListView(int position) {
-			// TODO Auto-generated method stub
-			// startActivity(new Intent(getApplicationContext(),
-			// TestActivity.class));
 			dummyLayer.setVisibility(View.VISIBLE);
 			imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
 			Dream dream = db.getDreamId(listdata.get(position).getId());
 			LatLng moveLatLng = new LatLng(dream.getLat(), dream.getLon());
-			map.moveCamera(CameraUpdateFactory.newLatLngZoom(moveLatLng, 15));
-			map.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
 
-			Marker marker = markerList.get(dream.getId());
-			marker.showInfoWindow();
-
+			//@TODO map move
+			tmapview.moveTo((float)dream.getLat(),(float)dream.getLon());
 		}
 	};
 
 	/*
-	 * ���̾��α� ���� ó��
+	 * acitivity finish
 	 */
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -879,160 +813,6 @@ public class SwipeActivity extends Activity {
 				break;
 			}
 		}
-	}
-
-	/*
-	 * ListViewSwipeGesture.TouchCallbacks swipeListener = new
-	 * ListViewSwipeGesture.TouchCallbacks() {
-	 *
-	 * @Override public void FullSwipeListView(int position) { // TODO
-	 * Auto-generated method stub Toast.makeText(getApplicationContext(), "����",
-	 * Toast.LENGTH_SHORT).show(); }
-	 *
-	 * @Override public void HalfSwipeListView(int position) { // TODO
-	 * Auto-generated method stub Toast.makeText(getApplicationContext(), "����",
-	 * Toast.LENGTH_SHORT).show(); }
-	 *
-	 * @Override public void LoadDataForScroll(int count) { // TODO
-	 * Auto-generated method stub
-	 *
-	 * }
-	 *
-	 * @Override public void onDismiss(ListView listView, int[]
-	 * reverseSortedPositions) { // TODO Auto-generated method stub
-	 * Toast.makeText(getApplicationContext(), "Delete",
-	 * Toast.LENGTH_SHORT).show(); for (int i : reverseSortedPositions) {
-	 * listdata.remove(i); listAdapter.notifyDataSetChanged(); } }
-	 *
-	 * @Override public void OnClickListView(int position) { // TODO
-	 * Auto-generated method stub
-	 *
-	 * }
-	 *
-	 * };
-	 */
-
-	/*
-	 * test api
-	 */
-
-	public void testApi() {
-		String key = "kbOUead1jRb3%2BIJz3Z%2FFfYQQrTXxsxZhBxIhgIjeA3WXM83aAUGiPiUHefz3G7QObpRxaZnffelPT8oNMLcH1g%3D%3D";
-		String serviceKey;
-		String count = "30";
-
-		pDialog = new ProgressDialog(this);
-		pDialog.setMessage("���ø� ���ٷ��ּ���.");
-		pDialog.setCancelable(false);
-
-		showpDialog();
-
-		db.deleteTable();
-
-		try {
-			serviceKey = URLEncoder.encode(key, "UTF-8");
-
-			String urlTour = " http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?"
-					+ "ServiceKey="
-					+ key
-					+ "&arrange=B"
-					+ "&contentTypeId=12"
-					+ "&areaCode=1"
-					+ "&numOfRows="
-					+ count
-					+ "&pageNo=1"
-					+ "&MobileOS=AND" + "&MobileApp=ohdoking" + "&_type=json";
-
-			String urlFestival = " http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?"
-					+ "ServiceKey="
-					+ key
-					+ "&arrange=B"
-					+ "&contentTypeId=15"
-					+ "&areaCode=1"
-					+ "&numOfRows=60"
-					+ "&pageNo=1"
-					+ "&MobileOS=AND" + "&MobileApp=ohdoking" + "&_type=json";
-
-			String urlFood = " http://api.visitkorea.or.kr/openapi/service/rest/KorService/areaBasedList?"
-					+ "ServiceKey="
-					+ key
-					+ "&arrange=B"
-					+ "&contentTypeId=39"
-					+ "&areaCode=1"
-					+ "&numOfRows="
-					+ count
-					+ "&pageNo=1"
-					+ "&MobileOS=AND" + "&MobileApp=ohdoking" + "&_type=json";
-
-			JsonObjectRequest jsonRequestTour = new JsonObjectRequest(
-					Request.Method.GET, urlTour, null,
-					new Response.Listener<JSONObject>() {
-
-						@Override
-						public void onResponse(JSONObject response) {
-							// the response is already constructed as a
-							// JSONObject!
-
-							inputApiResult(response);
-
-						}
-					}, new Response.ErrorListener() {
-
-				@Override
-				public void onErrorResponse(VolleyError error) {
-					error.printStackTrace();
-					hidepDialog();
-				}
-			});
-
-			JsonObjectRequest jsonRequestFestival = new JsonObjectRequest(
-					Request.Method.GET, urlFestival, null,
-					new Response.Listener<JSONObject>() {
-
-						@Override
-						public void onResponse(JSONObject response) {
-							// the response is already constructed as a
-							// JSONObject!
-
-							inputApiResult(response);
-
-						}
-					}, new Response.ErrorListener() {
-
-				@Override
-				public void onErrorResponse(VolleyError error) {
-					error.printStackTrace();
-				}
-			});
-
-			JsonObjectRequest jsonRequestFood = new JsonObjectRequest(
-					Request.Method.GET, urlFood, null,
-					new Response.Listener<JSONObject>() {
-
-						@Override
-						public void onResponse(JSONObject response) {
-							// the response is already constructed as a
-							// JSONObject!
-							inputApiResult(response);
-
-						}
-					}, new Response.ErrorListener() {
-
-				@Override
-				public void onErrorResponse(VolleyError error) {
-					error.printStackTrace();
-				}
-			});
-
-			Volley.newRequestQueue(this).add(jsonRequestFestival);
-			Volley.newRequestQueue(this).add(jsonRequestFood);
-			Volley.newRequestQueue(this).add(jsonRequestTour);
-
-		} catch (UnsupportedEncodingException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
 	}
 
 	void inputApiResult(JSONObject response) {
@@ -1092,15 +872,15 @@ public class SwipeActivity extends Activity {
 
 	String checkCategory(String c) {
 		if (c.equals("A0502")) {
-			return "����";
+			return "food";
 		} else if (c.equals("A0208")) {
-			return "����"; // �̼�
+			return "event"; // �̼�
 		} else if (c.equals("A0207")) {
-			return "Ȱ��"; // ����
+			return "festival"; // ����
 		} else if (c.equals("A0201") || c.equals("A0202") || c.equals("A0205")) {
-			return "�� ��"; // ������
+			return "tour"; // ������
 		} else {
-			return "��Ÿ";
+			return "etc";
 		}
 	}
 

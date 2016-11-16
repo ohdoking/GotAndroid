@@ -279,12 +279,14 @@ public class SeoulApiManager implements ApiManager {
                  catch(Exception e){
                  	continue;
                  }
+
+				 Log.i("test123123",jresponse.getString("title"));
                  String zone = "���ѹα�";
-                 String todo = new String(jresponse.getString("title").getBytes("8859_1"), Charset.forName("UTF-8"));
+                 String todo = new String(jresponse.getString("title"));
                  double lat = Double.valueOf(jresponse.getString("mapy"));
                  double lon = Double.valueOf(jresponse.getString("mapx"));
                  
-                 String location = new String(jresponse.getString("addr1").getBytes("8859_1"), Charset.forName("UTF-8"));
+                 String location = new String(jresponse.getString("addr1"));
                  
                  String memo = ""; 
                  if(!jresponse.has("tel")){
@@ -305,6 +307,9 @@ public class SeoulApiManager implements ApiManager {
                  
                  Dream d = new Dream(0, zone, todo, lat, lon, location, memo, category, 0, noti,0);
 					db.addDream(d);
+
+
+
              }
 //             System.out.println("Site: "+site+"\nNetwork: "+network);
              
