@@ -4,6 +4,31 @@
     android:orientation="vertical" >
 
     <LinearLayout
+        android:id="@+id/weatherLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:orientation="vertical" >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="weather test"
+            android:id="@+id/tvResult" />
+
+        <Button
+            android:text="btnClear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnClear" />
+
+        <Button
+            android:text="btnSend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnSend" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/dummyLayout"
         android:layout_width="wrap_content"
         android:layout_height="250dp"
