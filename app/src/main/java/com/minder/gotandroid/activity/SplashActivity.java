@@ -1,65 +1,62 @@
 package com.minder.gotandroid.activity;
 
-import com.minder.gotandroid.R;
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.minder.gotandroid.R;
+import com.minder.gotandroid.api.ApiManager;
+import com.minder.gotandroid.api.NullApiManager;
+import com.minder.gotandroid.api.SeoulEngApiManager;
+import com.minder.gotandroid.gps.GpsInfo;
+
+
 public class SplashActivity extends Activity {
-    public ImageView iv;
-    
+    public ApiManager apiManager;
+    GpsInfo gpsInfo;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
     	requestWindowFeature(Window.FEATURE_NO_TITLE);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.splash_activity);
-        
-        final int[] imageArray = { R.drawable.loading_0, 
-        		R.drawable.loading_1,
-        		R.drawable.loading_2
-        };
-        
-        
-        
-        
-        iv = (ImageView)findViewById(R.id.splash_icon);
-        final Handler handler = new Handler();
-        
-        Runnable runnable = new Runnable() {
-            int i = 0;
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.splash_activity2);
+        
+
+        if(getUsingApi() == true){
+        	if(getMylogcation() == null){
+        		apiManager = new NullApiManager();
+        	}
+	        else if(getMylogcation().equals("서울특별시") || getMylogcation().equals("Seoul")){
+	        	apiManager = new SeoulEngApiManager(getApplicationContext(),0);
+	        }
+	        apiManager.getApi();
+        }
+
+        Handler hd = new Handler();
+        hd.postDelayed(new Runnable() {
+
+            @Override
             public void run() {
-                iv.setImageResource(imageArray[i]);
-                i++;
-                if(i == imageArray.length)
-                {
-                	SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-                    String s = pref.getString("tuto", "");
-                    
-                    
-                    if(s.isEmpty()){
-                    	
-                    	Intent intent = new Intent(SplashActivity.this,ViewPagerActivity.class);
-                    	startActivity(intent);
-                    	
-                    }
-                	
-                	finish();    // ��Ƽ��Ƽ ����
-                	i--;
-                	
-                }
-                handler.postDelayed(this, 500);
+                finish();       // 3 초후 이미지를 닫아버림
             }
-        };
-        handler.postDelayed(runnable, 500);
+        }, 3000);
     }
+    
+    
     
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -68,4 +65,36 @@ public class SplashActivity extends Activity {
         }
         return super.onKeyDown(keyCode, event);
     }
+
+    private boolean getUsingApi(){
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        return pref.getBoolean("usingApi", false);    
+        
+    }
+    
+    private String getMylogcation(){
+    	String cityName = null;
+    	gpsInfo = new GpsInfo(SplashActivity.this);
+
+        if (gpsInfo.isGetLocation()) {
+
+            double latitude = gpsInfo.getLatitude();
+            double longitude = gpsInfo.getLongitude();
+
+            Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
+            List<Address> addresses;
+            try {
+                addresses = gcd.getFromLocation(latitude,
+                		longitude, 1);
+                if (addresses.size() > 0)
+                    System.out.println(addresses.get(0).getLocality());
+                cityName = addresses.get(0).getAdminArea();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+             
+        }
+		return cityName;
+    }
+    
 }

@@ -143,17 +143,6 @@ public class WriteActivity extends SampleActivityBase
 		todoDB = intent.getStringExtra("todo");
 		idDB = intent.getIntExtra("id", -1);
 
-		/*
-		 * final ActionBar actionBar = getActionBar();
-		 * actionBar.setBackgroundDrawable(new
-		 * ColorDrawable(Color.parseColor("#5fc4d9"))); ActionBar.LayoutParams
-		 * params = new
-		 * ActionBar.LayoutParams(ActionBar.LayoutParams.WRAP_CONTENT,ActionBar.
-		 * LayoutParams.WRAP_CONTENT, Gravity.CENTER );
-		 * 
-		 * actionBar.setIcon(R.drawable.logo3);
-		 * actionBar.setDisplayShowTitleEnabled(false);
-		 */
 		LayoutInflater inflater = (LayoutInflater) getActionBar().getThemedContext()
 				.getSystemService(LAYOUT_INFLATER_SERVICE);
 		View view = inflater.inflate(R.layout.actionbar, null);

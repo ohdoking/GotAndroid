@@ -20,7 +20,6 @@ import com.minder.gotandroid.dto.Dream;
 public class ListAdapter extends BaseAdapter {
 	private Activity activity;
 	private List<Dream> data;
-	private ArrayList<Dream> arraylist;
 	private List<Dream> originalList;
 
 	public ListAdapter(Activity a, List<Dream> list) {
@@ -65,15 +64,15 @@ public class ListAdapter extends BaseAdapter {
 			holder = (ViewHolder) convertView.getTag();
 
 		holder.text.setText(data.get(position).getTodo());
-		if ((data.get(position).getCategory()).equals("����"))
+		if ((data.get(position).getCategory()).equals("food"))
 			holder.image.setImageResource(R.drawable.listicon1);
-		else if ((data.get(position).getCategory()).equals("����"))
+		else if ((data.get(position).getCategory()).equals("event"))
 			holder.image.setImageResource(R.drawable.listicon2);
-		else if ((data.get(position).getCategory()).equals("Ȱ��"))
+		else if ((data.get(position).getCategory()).equals("festival"))
 			holder.image.setImageResource(R.drawable.listicon3);
-		else if ((data.get(position).getCategory()).equals("�� ��"))
+		else if ((data.get(position).getCategory()).equals("tour"))
 			holder.image.setImageResource(R.drawable.listicon4);
-		else if ((data.get(position).getCategory()).equals("��Ÿ"))
+		else
 			holder.image.setImageResource(R.drawable.listicon5);
 
 		return convertView;
@@ -86,9 +85,6 @@ public class ListAdapter extends BaseAdapter {
 	}
 
 	public void filterData(String query) {
-
-//		query = query;
-		
 		data.clear();
 
 		if (TextUtils.isEmpty(query)) {
@@ -96,74 +92,13 @@ public class ListAdapter extends BaseAdapter {
 		} else {
 
 			for (Dream dream : originalList) {
-
-				/*ArrayList<Dream> countryList = continent.getTodo();
-				ArrayList<Dream> newList = new ArrayList<Dream>();
-				for (Dream country : countryList) {
-					if (country.getTodo().toLowerCase().contains(query)
-							|| country.getMemo().toLowerCase().contains(query)) {
-						newList.add(country);
-					}
-				}
-				if (newList.size() > 0) {
-					Dream nContinent = new Dream(dream.getName(), newList);
-					data.add(nContinent);
-				}*/
 				
 				if (dream.getTodo().contains(query))
 				{
-					
 					data.add(dream);
 				}
 			}
 		}
-
 		notifyDataSetChanged();
-
 	}
-	
-	public void filterCategory(String query) {
-
-//		query = query;
-		
-		data.clear();
-
-		if (TextUtils.isEmpty(query)) {
-			data.addAll(originalList);
-		} else {
-//			Log.v("originalList1", String.valueOf(originalList.size()));
-			for (Dream dream : originalList) {
-
-				/*ArrayList<Dream> countryList = continent.getTodo();
-				ArrayList<Dream> newList = new ArrayList<Dream>();
-				for (Dream country : countryList) {
-					if (country.getTodo().toLowerCase().contains(query)
-							|| country.getMemo().toLowerCase().contains(query)) {
-						newList.add(country);
-					}
-				}
-				if (newList.size() > 0) {
-					Dream nContinent = new Dream(dream.getName(), newList);
-					data.add(nContinent);
-				}*/
-				
-				if (dream.getCategory().equals(query))
-				{
-					
-					data.add(dream);
-				}
-			}
-		}
-
-		notifyDataSetChanged();
-
-	}
-
-	/*
-	 * public void filter(CharSequence categoryString) { // categoryString =
-	 * categoryString.toLowerCase(Locale.getDefault()); data.clear(); if
-	 * (categoryString.length() == 0) { data.addAll(arraylist); } else { for
-	 * (Dream wp : arraylist) { if (wp.getTodo().contains(categoryString)) {
-	 * data.add(wp); } } } notifyDataSetChanged(); }
-	 */
 }

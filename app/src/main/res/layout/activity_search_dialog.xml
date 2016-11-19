@@ -16,14 +16,14 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:layout_gravity="center"
-        android:text="핀 위의 창을 클릭하시면" />
+        android:text="@string/search_engine_1" />
     
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:layout_gravity="center"
-        android:text="네이버 검색창으로 이동합니다." />
+        android:text="@string/search_engine_2" />
     
     <CheckBox
         android:id="@+id/checkbox_ask"
@@ -32,6 +32,6 @@
         android:layout_gravity="center"
         android:textSize="10dp"
         android:layout_margin="5dp"
-        android:text="다시 물어보지 않기" />
+        android:text="@string/search_engine_3" />
 
 </LinearLayout>

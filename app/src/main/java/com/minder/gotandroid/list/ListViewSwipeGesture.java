@@ -51,7 +51,6 @@ public class ListViewSwipeGesture implements View.OnTouchListener {
 	private float mDownX;
 	private boolean mSwiping;
 	private VelocityTracker mVelocityTracker;
-	private int mDownPosition;
 	private int temp_position, opened_position, stagged_position;
 	private ViewGroup mDownView, old_mDownView;
 	private ViewGroup mDownView_parent;
@@ -63,7 +62,6 @@ public class ListViewSwipeGesture implements View.OnTouchListener {
 	// Intermediate Usages
 	String TextColor = "#FF00FF"; // #FF4444
 	String RangeOneColor = "#FFFFFF"; // "#FFD060"
-	String RangeTwoColor = "#92C500";
 	String singleColor = "#FF4444";
 
 	// Functional Usages
@@ -71,8 +69,6 @@ public class ListViewSwipeGesture implements View.OnTouchListener {
 	public String FullColor; // Orange
 	public String HalfText;
 	public String FullText;
-	public String HalfTextFinal;
-	public String FullTextFinal;
 	public Drawable HalfDrawable;
 	public Drawable FullDrawable;
 
@@ -96,9 +92,7 @@ public class ListViewSwipeGesture implements View.OnTouchListener {
 		mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
 			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) { // Invokes
-																							// OnClick
-																							// Functionality
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				if (!moptionsDisplay) {
 					tcallbacks.OnClickListView(temp_position);
 				}
@@ -123,73 +117,10 @@ public class ListViewSwipeGesture implements View.OnTouchListener {
 		mAnimationTime = mListView.getContext().getResources().getInteger(android.R.integer.config_shortAnimTime);
 		HalfColor = RangeOneColor; // Green
 		FullColor = RangeOneColor; // Orange
-		/*
-		 * HalfText =
-		 * activity.getResources().getString(R.string.basic_action_1);
-		 * HalfTextFinal =
-		 * activity.getResources().getString(R.string.basic_action_1); FullText
-		 * = activity.getResources().getString(R.string.basic_action_2);
-		 * FullTextFinal =
-		 * activity.getResources().getString(R.string.basic_action_2);
-		 */
 		HalfDrawable = activity.getResources().getDrawable(R.drawable.delete);
 		FullDrawable = activity.getResources().getDrawable(R.drawable.modify);
 	}
 
-	public void setEnabled(boolean enabled) {
-		mPaused = !enabled;
-	}
-
-	public GestureScroll makeScrollListener() {
-		return new GestureScroll();
-	}
-
-	class GestureScroll implements AbsListView.OnScrollListener {
-		// Scroll Usages
-		private int visibleThreshold = 4;
-		private int currentPage = 0;
-		private int previousTotal = 0;
-		private boolean loading = true;
-		private int previousFirstVisibleItem = 0;
-		private long previousEventTime = 0, currTime, timeToScrollOneElement;
-		private double speed = 0;
-
-		@Override
-		public void onScrollStateChanged(AbsListView absListView, int scrollState) {
-			setEnabled(scrollState != AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL);
-		}
-
-		@Override
-		public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-			if (loading) {
-				if (totalItemCount > previousTotal) {
-					loading = false;
-					previousTotal = totalItemCount;
-					currentPage++;
-				}
-			}
-
-			if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
-				tcallbacks.LoadDataForScroll(totalItemCount);
-				loading = true;
-			}
-
-			if (previousFirstVisibleItem != firstVisibleItem) {
-				currTime = System.currentTimeMillis();
-				timeToScrollOneElement = currTime - previousEventTime;
-				speed = ((double) 1 / timeToScrollOneElement) * 1000;
-
-				previousFirstVisibleItem = firstVisibleItem;
-				previousEventTime = currTime;
-
-			}
-
-		}
-
-		public double getSpeed() {
-			return speed;
-		}
-	}
 
 	@SuppressLint("ResourceAsColor")
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
@@ -247,7 +178,6 @@ public class ListViewSwipeGesture implements View.OnTouchListener {
 
 			if (mDownView != null) {
 				mDownX = event.getRawX();
-				mDownPosition = mListView.getPositionForView(mDownView);
 				mVelocityTracker = VelocityTracker.obtain();
 				mVelocityTracker.addMovement(event);
 			} else {
@@ -303,7 +233,6 @@ public class ListViewSwipeGesture implements View.OnTouchListener {
 			mVelocityTracker = null;
 			mDownX = 0;
 			mDownView = null;
-			mDownPosition = ListView.INVALID_POSITION;
 			mSwiping = false;
 			break;
 		}
@@ -460,13 +389,6 @@ public class ListViewSwipeGesture implements View.OnTouchListener {
 	}
 
 	private void performDismiss(final View dismissView, final int dismissPosition) {
-		// Animate the dismissed list item to zero-height and fire the dismiss
-		// callback when
-		// all dismissed list item animations have completed. This triggers
-		// layout on each animation
-		// frame; in the future we may want to do something smarter and more
-		// performant.
-
 		final ViewGroup.LayoutParams lp = dismissView.getLayoutParams();
 		final int originalHeight = dismissView.getHeight();
 
@@ -494,15 +416,6 @@ public class ListViewSwipeGesture implements View.OnTouchListener {
 										Log.d("Dismiss positions....", dismissPositions[i] + "");
 									}
 									tcallbacks.onDismiss(mListView, dismissPositions);
-									// ViewGroup.LayoutParams lp;
-									// for (PendingDismissData pendingDismiss :
-									// mPendingDismisses) {
-									// // Reset view presentation
-									// lp =
-									// pendingDismiss.view.getLayoutParams();
-									// lp.height = originalHeight;
-									// pendingDismiss.view.setLayoutParams(lp);
-									// }
 									mPendingDismisses.clear();
 								}
 							}

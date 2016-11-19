@@ -6,15 +6,9 @@
     <LinearLayout
         android:id="@+id/dummyLayout"
         android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_height="250dp"
         android:orientation="vertical" >
 
-        <!--<fragment-->
-            <!--android:id="@+id/map"-->
-            <!--android:name="com.google.android.gms.maps.MapFragment"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="250dp"-->
-             <!--/>-->
     </LinearLayout>
     <ImageView
                 android:id="@+id/map_under"
@@ -55,23 +49,13 @@
 
             <ImageView
                 android:id="@+id/addtutorial"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:visibility="invisible"
                 android:src="@drawable/no_list" />
             
         </FrameLayout>
 
-        <ImageButton
-            android:id="@+id/todolist_addbtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_margin="15dp"
-            android:background="#00000000"
-            android:src="@drawable/todolist_addbtn" >
-        </ImageButton>
     </RelativeLayout>
 
 </LinearLayout>

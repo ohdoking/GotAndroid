@@ -38,7 +38,7 @@
         android:label="@string/app_name"
         android:theme="@style/Theme.MyAppTheme">
         <activity
-            android:name=".activity.SplashActivity2"
+            android:name=".activity.SplashActivity"
             android:label="@string/app_name" >
         </activity>
         <activity
