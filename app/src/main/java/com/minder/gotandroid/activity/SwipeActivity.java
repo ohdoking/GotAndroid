@@ -28,6 +28,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -54,12 +55,6 @@ import com.skp.Tmap.TMapMarkerItem;
 import com.skp.Tmap.TMapPoint;
 import com.skp.Tmap.TMapView;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -151,7 +146,7 @@ public class SwipeActivity extends Activity {
 		dummyLayer = (LinearLayout) findViewById(R.id.dummyLayout);
 		listdata = new ArrayList<Dream>();
 		InitializeValues();
-		final ListViewSwipeGesture touchListener = new ListViewSwipeGesture(cmn_list_view, swipeListener, this);
+		// final ListViewSwipeGesture touchListener = new ListViewSwipeGesture(cmn_list_view, swipeListener, this);
 		// touchListener.SwipeType = ListViewSwipeGesture.Double; // Set two
 
 		settingImageView.setOnClickListener(new View.OnClickListener() {
@@ -189,7 +184,17 @@ public class SwipeActivity extends Activity {
 			addtutorial.setVisibility(View.INVISIBLE);
 		}
 
-		cmn_list_view.setOnTouchListener(touchListener);
+		cmn_list_view.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+				dummyLayer.setVisibility(View.VISIBLE);
+				imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
+				Dream dream = db.getDreamId(listdata.get(position).getId());
+
+				//@TODO map move
+				tmapview.setCenterPoint(dream.getLon(), dream.getLat(), true);
+			}
+		});
 
 
 		chkGpsService();
@@ -229,7 +234,6 @@ public class SwipeActivity extends Activity {
 			gsDialog.setPositiveButton(R.string.setting,
 					new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int which) {
-							// GPS���� ȭ������ �̵�
 							Intent intent = new Intent(
 									android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
 							intent.addCategory(Intent.CATEGORY_DEFAULT);
@@ -460,36 +464,7 @@ public class SwipeActivity extends Activity {
 		}
 	}
 
-	ListViewSwipeGesture.TouchCallbacks swipeListener = new ListViewSwipeGesture.TouchCallbacks() {
 
-		@Override
-		public void FullSwipeListView(int position) {
-		}
-
-		@Override
-		public void HalfSwipeListView(int position) {
-		}
-
-		@Override
-		public void LoadDataForScroll(int count) {
-			// TODO Auto-generated method stub
-
-		}
-
-		@Override
-		public void onDismiss(ListView listView, int[] reverseSortedPositions) {
-		}
-
-		@Override
-		public void OnClickListView(int position) {
-			dummyLayer.setVisibility(View.VISIBLE);
-			imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
-			Dream dream = db.getDreamId(listdata.get(position).getId());
-
-			//@TODO map move
-			tmapview.setCenterPoint(dream.getLon(), dream.getLat(), true);
-        }
-	};
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
