@@ -280,7 +280,7 @@ public class SwipeActivity extends Activity {
 				.getThemedContext().getSystemService(LAYOUT_INFLATER_SERVICE);
 		View view = inflater.inflate(R.layout.main_actionbar, null);
 
-		ImageView settingImageView = (ImageView) view
+		ImageButton settingImageView = (ImageButton) view
 				.findViewById(R.id.settingImg);
 
 		ActionBar.LayoutParams params = new ActionBar.LayoutParams(
@@ -310,25 +310,6 @@ public class SwipeActivity extends Activity {
 			}
 		});
 
-		settingImageView.setOnTouchListener(new View.OnTouchListener() {
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				ImageView view = (ImageView)v;
-				switch (event.getAction()) {
-					case MotionEvent.ACTION_DOWN: {
-						view.setBackgroundColor(0xffeaeaea);
-						break;
-					}
-					case MotionEvent.ACTION_UP:{
-						view.setBackgroundColor(0x00000000);
-						break;
-					}
-				}
-				return false;
-
-			}
-		});
 
 		addtutorial = (ImageView) findViewById(R.id.addtutorial);
 		if (cmn_list_view.getCount() == 0) {

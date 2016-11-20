@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Got</string>
+    <string name="app_name">GO.T</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_filter_acitivy">FilterAcitivy</string>
@@ -21,4 +21,33 @@
     <string name="title_activity_android_gpstracking">AndroidGPSTrackingActivity</string>
     <string name="title_activity_made">MadeActivity</string>
 
+
+    <string name="title_gps_setting">Location Services set-up</string>
+    <string name="memo_gps_setting">"Your location information is required to receive GO.T notifications. Please allow "Location Services" in your device's settings."</string>
+    <string name="toast_api_on_off">"You can on/off Seoul Tourism Public Data Acquisition at set-up page."</string>
+
+    <string name="cancel">Cancel</string>
+    <string name="setting">Set-Up</string>
+    <string name="ok">Confirm</string>
+
+    <string name="toast_back">"Press \'Back\' button again to exit.""</string>
+
+    <string name="search_engine_1">Click on the window above the pin</string>
+    <string name="search_engine_2">to go to the Google search window.</string>
+    <string name="search_engine_3">Do not ask again</string>
+
+    <string name="category_filter">Category Filter</string>
+    <string name="category_1">Only selected categories are shown in main.</string>
+
+
+    <string name="ask">Contact us</string>
+    <string name="tutorial">Tutorial</string>
+    <string name="creator">Creator</string>
+    <string name="download">Download public API</string>
+
+    <string name="settingActivity">Information</string>
+
+    <string name="temp_unit">°C</string>
+    <string name="temp_high">Highest</string>
+    <string name="temp_low">Lowest</string>
 </resources>
