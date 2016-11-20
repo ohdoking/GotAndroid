@@ -18,6 +18,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -29,6 +31,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -62,6 +65,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import com.minder.gotandroid.weather.api.APIRequest;
+import com.minder.gotandroid.weather.common.PlanetXSDKConstants;
+import com.minder.gotandroid.weather.common.PlanetXSDKException;
+import com.minder.gotandroid.weather.common.RequestBundle;
+import com.minder.gotandroid.weather.common.RequestListener;
+import com.minder.gotandroid.weather.common.ResponseMessage;
 
 /**
  * Created by ohdok on 2016-11-13.
@@ -98,6 +108,73 @@ public class SwipeActivity extends Activity {
 	//	add tmap
 	LinearLayout contentView;
 	TMapView tmapview;
+
+
+	// add weather
+	TextView tvCity;
+	TextView tvCounty;
+	TextView tvTmax;
+	TextView tvTmin;
+	APIRequest api;
+	RequestBundle requestBundle;
+	String URL = "http://apis.skplanetx.com/weather/summary";
+	Map<String, Object> param;
+	String hndResult="";
+	String resultCity="";
+	String resultCounty="";
+	String resultCode="";
+	String resultTmax="";
+	String resultTmin="";
+	ImageView imWeather;
+	Handler msgHandler = new Handler() {
+		public void dispatchMessage(Message msg) {
+			tvCity.setText(resultCity);
+			tvCounty.setText(resultCounty);
+			tvTmax.setText(resultTmax);
+			tvTmin.setText(resultTmin);
+			Log.e("tag",resultCode);
+			switch (resultCode) {
+				case "SKY_D01":
+					// 맑음
+					Bitmap sky01 = BitmapFactory.decodeResource(getResources(),R.drawable.weather_01_1);
+					imWeather.setImageBitmap(sky01);
+					break;
+				case "SKY_D02":
+					// 구름조금
+					Bitmap sky02 = BitmapFactory.decodeResource(getResources(),R.drawable.weather_02_1);
+					imWeather.setImageBitmap(sky02);
+					break;
+				case "SKY_D03":
+					// 구름많음
+					Bitmap sky03 = BitmapFactory.decodeResource(getResources(),R.drawable.weather_03_1);
+					imWeather.setImageBitmap(sky03);
+					break;
+				case "SKY_D04":
+					// 흐림
+					Bitmap sky04 = BitmapFactory.decodeResource(getResources(),R.drawable.weather_04);
+					imWeather.setImageBitmap(sky04);
+					break;
+				case "SKY_D05":
+					// 비
+					Bitmap sky05 = BitmapFactory.decodeResource(getResources(),R.drawable.weather_05);
+					imWeather.setImageBitmap(sky05);
+					break;
+				case "SKY_D06":
+					// 눈
+					Bitmap sky06 = BitmapFactory.decodeResource(getResources(),R.drawable.weather_06);
+					imWeather.setImageBitmap(sky06);
+					break;
+				case "SKY_D07":
+					// 비 또는 눈
+					Bitmap sky07 = BitmapFactory.decodeResource(getResources(),R.drawable.weather_07);
+					imWeather.setImageBitmap(sky07);
+					break;
+				default:
+					break;
+			}
+		}
+	};
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -207,6 +284,14 @@ public class SwipeActivity extends Activity {
 		contentView.addView(tmapview, new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT));
 
 		initMap();
+
+		// add weather
+		commWithOpenApiServer();
+		tvCity = (TextView) findViewById(R.id.tvCity);
+		tvCounty = (TextView) findViewById(R.id.tvCounty);
+		tvTmax = (TextView) findViewById(R.id.tvTmax);
+		tvTmin = (TextView) findViewById(R.id.tvTmin);
+		imWeather = (ImageView) findViewById(R.id.imWeather);
 	}
 
 	private boolean chkGpsService() {
@@ -600,4 +685,46 @@ public class SwipeActivity extends Activity {
 			toast.show();
 		}
 	}
+
+	// add weather
+	public void commWithOpenApiServer() {
+		api = new APIRequest();
+		APIRequest.setAppKey("d2401464-9537-30ef-985a-65d90e883c02");
+		param = new HashMap<String, Object>();
+		param.put("version","1");
+		param.put("lat","37.5714000000");
+		param.put("lon","126.9658000000");
+		param.put("stnid","108");
+		// requestBundle
+		requestBundle = new RequestBundle();
+		requestBundle.setUrl(URL);
+		requestBundle.setParameters(param);
+		requestBundle.setHttpMethod(PlanetXSDKConstants.HttpMethod.GET);
+		requestBundle.setResponseType(PlanetXSDKConstants.CONTENT_TYPE.JSON);
+		try {
+			// async call
+			api.request(requestBundle, requestListener);
+		} catch (PlanetXSDKException e) {
+			e.printStackTrace();
+		}
+	}
+	// async call listener
+	public RequestListener requestListener = new RequestListener() {
+		@Override
+		public void onPlanetSDKException(PlanetXSDKException e) {
+			hndResult = e.toString();
+			msgHandler.sendEmptyMessage(0);
+		}
+		@Override
+		public void onComplete(ResponseMessage result) {
+			// inform to messagehandler
+			resultCity = (String) result.getResultHashmap().get("city");
+			resultCounty = (String) result.getResultHashmap().get("county");
+			resultCode = (String) result.getResultHashmap().get("today_code");
+			resultTmin = (String) result.getResultHashmap().get("today_tmax");
+			resultTmax = (String) result.getResultHashmap().get("today_tmin");
+			msgHandler.sendEmptyMessage(0);
+		}
+	};
+
 }

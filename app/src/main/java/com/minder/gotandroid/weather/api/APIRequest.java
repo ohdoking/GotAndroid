@@ -520,44 +520,23 @@ public class APIRequest implements APIRequestInterface {
                     "dayAfterTomorrow":{"sky":{"name":"구름조금","code":"SKY_M02"},"temperature":{"tmax":"13.00","tmin":"4.00"}}
                     }]
                     */
-                    // today
+                    JSONObject grid = resultObj.getJSONObject("grid");
+                    String city = grid.getString("city");
+                    String county = grid.getString("county");
                     JSONObject today = resultObj.getJSONObject("today");
                     JSONObject today_sky = today.getJSONObject("sky");
                     String today_name = today_sky.getString("name");
                     String today_code = today_sky.getString("code");
                     JSONObject today_temperature = today.getJSONObject("temperature");
-                    Log.e("tag", String.valueOf(today_temperature));
                     Double today_tmax = today_temperature.getDouble("tmax");
                     Double today_tmin = today_temperature.getDouble("tmin");
-                    // tomorrow
-                    JSONObject tomorrow = resultObj.getJSONObject("tomorrow");
-                    JSONObject tomorrow_sky = tomorrow.getJSONObject("sky");
-                    String tomorrow_name = tomorrow_sky.getString("name");
-                    String tomorrow_code = tomorrow_sky.getString("code");
-                    JSONObject tomorrow_temperature = tomorrow.getJSONObject("temperature");
-                    Double tomorrow_tmax = tomorrow_temperature.getDouble("tmax");
-                    Double tomorrow_tmin = tomorrow_temperature.getDouble("tmin");
-                    // dayAfterTomorrow
-                    JSONObject dayAfterTomorrow = resultObj.getJSONObject("dayAfterTomorrow");
-                    JSONObject dayAfterTomorrow_sky = dayAfterTomorrow.getJSONObject("sky");
-                    String dayAfterTomorrow_name = dayAfterTomorrow_sky.getString("name");
-                    String dayAfterTomorrow_code = dayAfterTomorrow_sky.getString("code");
-                    JSONObject dayAfterTomorrow_temperature = dayAfterTomorrow.getJSONObject("temperature");
-                    Double dayAfterTomorrow_tmax = dayAfterTomorrow_temperature.getDouble("tmax");
-                    Double dayAfterTomorrow_tmin = dayAfterTomorrow_temperature.getDouble("tmin");
                     resultWeather = new HashMap<>();
+                    resultWeather.put("city", city);
+                    resultWeather.put("county", county);
                     resultWeather.put("today_name", today_name);
                     resultWeather.put("today_code", today_code);
                     resultWeather.put("today_tmax", String.valueOf(today_tmax));
                     resultWeather.put("today_tmin", String.valueOf(today_tmin));
-                    resultWeather.put("tomorrow_name", tomorrow_name);
-                    resultWeather.put("tomorrow_code", tomorrow_code);
-                    resultWeather.put("tomorrow_tmax", String.valueOf(tomorrow_tmax));
-                    resultWeather.put("tomorrow_tmin", String.valueOf(tomorrow_tmin));
-                    resultWeather.put("dayAfterTomorrow_name", dayAfterTomorrow_name);
-                    resultWeather.put("dayAfterTomorrow_code", dayAfterTomorrow_code);
-                    resultWeather.put("dayAfterTomorrow_tmax", String.valueOf(dayAfterTomorrow_tmax));
-                    resultWeather.put("dayAfterTomorrow_tmin", String.valueOf(dayAfterTomorrow_tmin));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
