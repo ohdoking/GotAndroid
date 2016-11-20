@@ -39,6 +39,8 @@ public class SplashActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_activity2);
 
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
         if(getUsingApi() == true){
             if(getMylogcation() == null){
                 apiManager = new NullApiManager();
@@ -65,7 +67,8 @@ public class SplashActivity extends Activity {
 
             public void run() {
                 bg.setImageResource(imageArray[i]);
-                bg.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                FrameLayout.LayoutParams layoutParams = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+                bg.setLayoutParams(layoutParams);
                 i++;
                 if(i == imageArray.length)
                 {
@@ -88,7 +91,7 @@ public class SplashActivity extends Activity {
                     }
                     i = 0 ;
                 }
-                handler.postDelayed(this, 1000);
+                handler.postDelayed(this, 300);
             }
         };
         handler.postDelayed(runnable, 100);
