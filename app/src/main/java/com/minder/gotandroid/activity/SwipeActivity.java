@@ -276,6 +276,7 @@ public class SwipeActivity extends Activity {
 		// tmap init
 		tmapview = new TMapView(this);
 		tmapview.setSKPMapApiKey(getResources().getString(R.string.t_map_key));
+		tmapview.setLanguage(TMapView.LANGUAGE_ENGLISH);
 
 		contentView.removeAllViews();
 		contentView.addView(tmapview, new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT));
@@ -389,6 +390,10 @@ public class SwipeActivity extends Activity {
 			if (location != null) {
 				// Current Location
 				tmapview.setCenterPoint(location.getLongitude(), location.getLatitude(), true);
+
+
+
+
 				tmapview.setTrackingMode(true);
 
 			}

@@ -269,7 +269,6 @@ public class SeoulEngApiManager implements ApiManager {
             response = response.getJSONObject("response").getJSONObject("body").getJSONObject("items");
             JSONArray rowArray = response.getJSONArray("item");
 
-
             for(int i=0;i<rowArray.length();i++){
 
                 JSONObject jresponse = rowArray.getJSONObject(i);
@@ -281,7 +280,9 @@ public class SeoulEngApiManager implements ApiManager {
                 }
 
                 String zone = "Seoul";
-                String todo = new String(jresponse.getString("title"));
+                String todoFullText = new String(jresponse.getString("title"));
+                String[] todoList = todoFullText.split("\\(");
+                String todo = todoList[0];
                 double lat = Double.valueOf(jresponse.getString("mapy"));
                 double lon = Double.valueOf(jresponse.getString("mapx"));
 
