@@ -298,8 +298,7 @@ public class SwipeActivity extends Activity {
 
 		cmn_list_view = (ListView) findViewById(R.id.cmn_list_view);
 		dummyLayer = (LinearLayout) findViewById(R.id.dummyLayout);
-		listdata = new ArrayList<Dream>();
-		InitializeValues();
+
 		// final ListViewSwipeGesture touchListener = new ListViewSwipeGesture(cmn_list_view, swipeListener, this);
 		// touchListener.SwipeType = ListViewSwipeGesture.Double; // Set two
 
@@ -326,8 +325,9 @@ public class SwipeActivity extends Activity {
 				imm.hideSoftInputFromWindow(searchView.getWindowToken(), 0);
 				Dream dream = db.getDreamId(listdata.get(position).getId());
 
-				//@TODO map move
 				tmapview.setCenterPoint(dream.getLon(), dream.getLat(), true);
+				TMapMarkerItem m = tmapview.getMarkerItemFromID(dream.getId().toString());
+				m.setCanShowCallout(true);
 			}
 		});
 
@@ -341,6 +341,9 @@ public class SwipeActivity extends Activity {
 
 		contentView.removeAllViews();
 		contentView.addView(tmapview, new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT));
+
+		listdata = new ArrayList<Dream>();
+		InitializeValues();
 
 		initMap();
 
@@ -406,10 +409,9 @@ public class SwipeActivity extends Activity {
 
 			gpsTracker = new GPSTracker(getApplicationContext());
 
-			markerList = new HashMap<Integer, Marker>();
-
 			if (!listdata.isEmpty()) {
 				//@TODO clear add
+				tmapview.removeAllMarkerItem();
 				for (Dream dream : listdata) {
 
 					int id = 0;
@@ -435,6 +437,7 @@ public class SwipeActivity extends Activity {
 					markeritem2.setTMapPoint(tpoint);
 					Bitmap bitmap = BitmapFactory.decodeResource(getResources(),id);
 					markeritem2.setIcon(bitmap);
+					Log.i("ohdoking-test",dream.getId().toString());
 					markeritem2.setID(dream.getId().toString());
 					markeritem2.setPosition(0.5f,1.0f);
 					markeritem2.setCanShowCallout(true);
@@ -471,9 +474,6 @@ public class SwipeActivity extends Activity {
 		listdata.clear();
 		listdata.addAll(db.getDreamCate(list));
 
-		for (Dream string : listdata) {
-			Log.i("ohdoking12", string.getCategory() + "//" + string.getTodo());
-		}
 		listAdapter = new ListAdapter(this, listdata);
 		cmn_list_view.setAdapter(listAdapter);
 
@@ -504,7 +504,7 @@ public class SwipeActivity extends Activity {
 
 		db = new MyDB(getApplicationContext());
 		InitializeValues();
-
+		initMap();
 		listAdapter.notifyDataSetChanged();
 		if (cmn_list_view.getCount() == 0) {
 			addtutorial.setVisibility(View.VISIBLE);
@@ -752,7 +752,7 @@ public class SwipeActivity extends Activity {
 	// add weather
 	public void commWithOpenApiServer(Double lon, Double lat) {
 		api = new APIRequest();
-		APIRequest.setAppKey("d2401464-9537-30ef-985a-65d90e883c02");
+		APIRequest.setAppKey(getResources().getString(R.string.t_map_key));
 
 		param = new HashMap<String, Object>();
 		param.put("version","1");
