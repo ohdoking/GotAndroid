@@ -5,8 +5,7 @@
     android:background="#5FC4D9"
     android:weightSum="100"
     android:gravity="center_horizontal"
-    android:orientation="vertical"
-    tools:context="com.test.myProject.SplashActivity">
+    android:orientation="vertical">
 
 		<LinearLayout 
             android:layout_width="wrap_content"

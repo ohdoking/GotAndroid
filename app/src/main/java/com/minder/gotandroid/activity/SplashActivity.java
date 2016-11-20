@@ -13,8 +13,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.KeyEvent;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.minder.gotandroid.R;
@@ -47,12 +49,12 @@ public class SplashActivity extends Activity {
             apiManager.getApi();
         }
 
-        final int[] imageArray = { R.drawable.loading_app_1,
-                R.drawable.loading_app_2,
-                R.drawable.loading_app_3,
+        final int[] imageArray = {
                 R.drawable.loading_app_1,
                 R.drawable.loading_app_2,
-                R.drawable.loading_app_3
+                R.drawable.loading_app_3,
+                R.drawable.loading_app_2,
+                R.drawable.loading_app_1
         };
 
         bg = (ImageView)findViewById(R.id.splash_title);
@@ -63,6 +65,7 @@ public class SplashActivity extends Activity {
 
             public void run() {
                 bg.setImageResource(imageArray[i]);
+                bg.setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                 i++;
                 if(i == imageArray.length)
                 {
@@ -79,14 +82,13 @@ public class SplashActivity extends Activity {
                         if(s.isEmpty()){
                             Intent intent = new Intent(SplashActivity.this,ViewPagerActivity.class);
                             startActivity(intent);
-
                         }
 
                         finish();
                     }
                     i = 0 ;
                 }
-                handler.postDelayed(this, 300);
+                handler.postDelayed(this, 1000);
             }
         };
         handler.postDelayed(runnable, 100);
@@ -102,9 +104,6 @@ public class SplashActivity extends Activity {
         return super.onKeyDown(keyCode, event);
     }
 
-
-
-    //api 받아오기 여부
     private boolean getUsingApi(){
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         return pref.getBoolean("usingApi", true);
