@@ -91,7 +91,7 @@ public class SwipeActivity extends Activity {
 	public static int splash = 0;
 
 	public Map<Integer, Marker> markerList;
-	private GoogleMap map;
+//	private GoogleMap map;
 
 	SearchView searchView;
 	ImageView addtutorial;
@@ -670,7 +670,7 @@ public class SwipeActivity extends Activity {
 				listdata.addAll(db.getAllDreams());
 				initMap();
 				if(db.getAllDreams().size() == 0){
-					map.clear();
+//					map.clear();
 				}
 				listAdapter.notifyDataSetChanged();
 				break;
