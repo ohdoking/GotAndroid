@@ -416,22 +416,18 @@ public class SwipeActivity extends Activity {
 
 					int id = 0;
 
-					if (dream.getCategory().equals("food")) {
+					if (dream.getCategory().equals("sight")) {
 						id = R.drawable.mapicon1;
-					} else if (dream.getCategory().equals("event")) {
-						id = R.drawable.mapicon2;
-
 					} else if (dream.getCategory().equals("festival")) {
-
+						id = R.drawable.mapicon2;
+					} else if (dream.getCategory().equals("food")) {
 						id = R.drawable.mapicon3;
-					} else if (dream.getCategory().equals("tour")) {
-
+					} else if (dream.getCategory().equals("exhibition")) {
 						id = R.drawable.mapicon4;
 					} else {
 						id = R.drawable.mapicon5;
 					}
 
-					Log.i("test123",dream.getLat()+"");
 					TMapMarkerItem markeritem2 = new TMapMarkerItem();
 					TMapPoint tpoint = new TMapPoint(dream.getLat(), dream.getLon());
 					markeritem2.setTMapPoint(tpoint);
@@ -482,10 +478,10 @@ public class SwipeActivity extends Activity {
 	private Set getPreferences() {
 		SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
 		Set<String> hash = new HashSet<String>();
-		hash.add("tour");
+		hash.add("sight");
 		hash.add("festival");
-		hash.add("event");
 		hash.add("food");
+		hash.add("exhibition");
 		hash.add("etc");
 
 		return pref.getStringSet("categoryList", hash);

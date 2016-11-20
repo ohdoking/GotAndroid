@@ -75,13 +75,13 @@ public class ListAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
 
         holder.text.setText(data.get(position).getTodo());
-        if ((data.get(position).getCategory()).equals("food"))
+        if ((data.get(position).getCategory()).equals("sight"))
             holder.image.setImageResource(R.drawable.listicon1);
-        else if ((data.get(position).getCategory()).equals("event"))
-            holder.image.setImageResource(R.drawable.listicon2);
         else if ((data.get(position).getCategory()).equals("festival"))
+            holder.image.setImageResource(R.drawable.listicon2);
+        else if ((data.get(position).getCategory()).equals("food"))
             holder.image.setImageResource(R.drawable.listicon3);
-        else if ((data.get(position).getCategory()).equals("tour"))
+        else if ((data.get(position).getCategory()).equals("exhibition"))
             holder.image.setImageResource(R.drawable.listicon4);
         else
             holder.image.setImageResource(R.drawable.listicon5);

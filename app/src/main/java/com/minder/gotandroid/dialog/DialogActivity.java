@@ -55,18 +55,6 @@ public class DialogActivity extends Activity implements OnClickListener {
 		categoryId4 = 4;
 		categoryId5 = 5;
 
-		/*
-		 * CustomGrid adapter = new CustomGrid(DialogActivity.this, web,
-		 * imageId); grid=(GridView)findViewById(R.id.grid);
-		 * grid.setAdapter(adapter); grid.setOnItemClickListener(new
-		 * AdapterView.OnItemClickListener() {
-		 * 
-		 * @Override public void onItemClick(AdapterView<?> parent, View view,
-		 * int position, long id) { Toast.makeText(DialogActivity.this,
-		 * "You Clicked at " +web[+ position], Toast.LENGTH_SHORT).show();
-		 * 
-		 * } });
-		 */
 
 		db = new MyDB(getApplicationContext());
 
@@ -77,21 +65,21 @@ public class DialogActivity extends Activity implements OnClickListener {
 		cat5 = (ImageButton) findViewById(R.id.cate5);
 
 		for (String category : list) {
-			if (category.equals("food")) {
+			if (category.equals("sight")) {
 				cat1.setImageResource(R.drawable.writeicon1);
-				categoryList.add("food");
+				categoryList.add("sight");
 				categoryId1 = 0;
-			} else if (category.equals("event")) {
-				cat2.setImageResource(R.drawable.writeicon2);
-				categoryList.add("event");
-				categoryId2 = 0;
 			} else if (category.equals("festival")) {
-				cat3.setImageResource(R.drawable.writeicon3);
+				cat2.setImageResource(R.drawable.writeicon2);
 				categoryList.add("festival");
+				categoryId2 = 0;
+			} else if (category.equals("food")) {
+				cat3.setImageResource(R.drawable.writeicon3);
+				categoryList.add("food");
 				categoryId3 = 0;
-			} else if (category.equals("tour")) {
+			} else if (category.equals("exhibition")) {
 				cat4.setImageResource(R.drawable.writeicon4);
-				categoryList.add("tour");
+				categoryList.add("exhibition");
 				categoryId4 = 0;
 			} else if (category.equals("etc")) {
 				cat5.setImageResource(R.drawable.writeicon5);
@@ -112,7 +100,6 @@ public class DialogActivity extends Activity implements OnClickListener {
 			@Override
 			public void onClick(View arg0) {
 				if (categoryId1 == 1 && categoryId2 == 2 && categoryId3 == 3 && categoryId4 == 4 && categoryId5 == 5) {
-					Toast.makeText(DialogActivity.this, "�ϳ� �̻� �������ּ���.", Toast.LENGTH_LONG).show();
 				} else {
 					try {
 						savePreferences(categoryList);
@@ -120,8 +107,6 @@ public class DialogActivity extends Activity implements OnClickListener {
 						setResult(Activity.RESULT_OK, resultIntent);
 						finish();
 					} catch (RuntimeException e) {
-						Toast.makeText(DialogActivity.this, "�ϳ� �̻� �������ּ���.", Toast.LENGTH_LONG).show();
-
 					}
 				}
 			}
@@ -143,11 +128,11 @@ public class DialogActivity extends Activity implements OnClickListener {
 	private Set getPreferences() {
 		SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
 		Set<String> hash = new HashSet<String>();
-		hash.add("food");
+		hash.add("sight");
 		hash.add("festival");
-		hash.add("tour");
+		hash.add("food");
+		hash.add("exhibition");
 		hash.add("etc");
-		hash.add("event");
 
 		return pref.getStringSet("categoryList", hash);
 	}
@@ -171,7 +156,7 @@ public class DialogActivity extends Activity implements OnClickListener {
 
 		switch (v.getId()) {
 			case R.id.cate1:
-				category = "food";
+				category = "sight";
 				if (categoryId1 == 0) {
 					cat1.setImageResource(R.drawable.inactive1);
 					categoryId1 = 1;
@@ -183,10 +168,10 @@ public class DialogActivity extends Activity implements OnClickListener {
 				}
 
 				check = 1;
-				Toast.makeText(DialogActivity.this, "food", Toast.LENGTH_SHORT).show();
+				Toast.makeText(DialogActivity.this, "Sight", Toast.LENGTH_SHORT).show();
 				break;
 			case R.id.cate2:
-				category = "event";
+				category = "festival";
 				if (categoryId2 == 0) {
 					cat2.setImageResource(R.drawable.inactive2);
 					categoryId2 = 2;
@@ -197,10 +182,10 @@ public class DialogActivity extends Activity implements OnClickListener {
 					categoryList.add(category);
 				}
 				check = 2;
-				Toast.makeText(DialogActivity.this, "event", Toast.LENGTH_SHORT).show();
+				Toast.makeText(DialogActivity.this, "Festival", Toast.LENGTH_SHORT).show();
 				break;
 			case R.id.cate3:
-				category = "festival";
+				category = "food";
 				if (categoryId3 == 0) {
 					cat3.setImageResource(R.drawable.inactive3);
 					categoryId3 = 3;
@@ -211,10 +196,10 @@ public class DialogActivity extends Activity implements OnClickListener {
 					categoryList.add(category);
 				}
 				check = 3;
-				Toast.makeText(DialogActivity.this, "festival", Toast.LENGTH_SHORT).show();
+				Toast.makeText(DialogActivity.this, "Food", Toast.LENGTH_SHORT).show();
 				break;
 			case R.id.cate4:
-				category = "tour";
+				category = "exhibition";
 				if (categoryId4 == 0) {
 					cat4.setImageResource(R.drawable.inactive4);
 					categoryId4 = 4;
@@ -225,7 +210,7 @@ public class DialogActivity extends Activity implements OnClickListener {
 					categoryList.add(category);
 				}
 				check = 4;
-				Toast.makeText(DialogActivity.this, "tour", Toast.LENGTH_SHORT).show();
+				Toast.makeText(DialogActivity.this, "Exhibition", Toast.LENGTH_SHORT).show();
 				break;
 			case R.id.cate5:
 				category = "etc";
@@ -239,13 +224,9 @@ public class DialogActivity extends Activity implements OnClickListener {
 					categoryList.add(category);
 				}
 				check = 5;
-				Toast.makeText(DialogActivity.this, "etc", Toast.LENGTH_SHORT).show();
+				Toast.makeText(DialogActivity.this, "ETC", Toast.LENGTH_SHORT).show();
 				break;
 		}
-
-	}
-
-	public void fillter() {
 
 	}
 }

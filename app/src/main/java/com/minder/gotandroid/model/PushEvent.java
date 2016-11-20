@@ -255,13 +255,13 @@ public class PushEvent extends Service {
 		Notification.Builder mBuilder = new Notification.Builder(this);
 		Bitmap bm = BitmapFactory.decodeResource(getApplicationContext().getResources(), R.drawable.indicator);
 		
-		mBuilder.setSmallIcon(R.drawable.indicator);
+		mBuilder.setSmallIcon(R.drawable.ic_launcher);
 //		mBuilder.setLargeIcon(bm);
-		mBuilder.setTicker("PIN Minder");
+		mBuilder.setTicker("GO.T");
 		mBuilder.setWhen(System.currentTimeMillis());
 		mBuilder.setNumber(list.size());
-		mBuilder.setContentTitle("PIN Minder");
-		mBuilder.setContentText("\'" + list.get(0).getTodo() + "\' �� �־���");
+		mBuilder.setContentTitle("GO.T");
+		mBuilder.setContentText("\'" + list.get(0).getTodo());
 		mBuilder.setDefaults(Notification.DEFAULT_SOUND
 				| Notification.DEFAULT_VIBRATE);
 		mBuilder.setContentIntent(pendingIntent);
