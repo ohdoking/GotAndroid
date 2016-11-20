@@ -757,8 +757,9 @@ public class SwipeActivity extends Activity {
 		param = new HashMap<String, Object>();
 		param.put("version","1");
 		if(lat == 0.0){
-			param.put("lat",37.5714000000);
-			param.put("lon",126.9658000000);
+			//default 시청
+			param.put("lat",37.565704);
+			param.put("lon",126.976819);
 		}else{
 			param.put("lat",lat);
 			param.put("lon",lon);

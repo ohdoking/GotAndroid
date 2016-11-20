@@ -21,6 +21,7 @@ import com.minder.gotandroid.R;
 import com.minder.gotandroid.api.ApiManager;
 import com.minder.gotandroid.api.NullApiManager;
 import com.minder.gotandroid.api.SeoulApiManager;
+import com.minder.gotandroid.api.SeoulEngApiManager;
 import com.minder.gotandroid.gps.GpsInfo;
 
 public class SplashActivity extends Activity {
@@ -41,7 +42,7 @@ public class SplashActivity extends Activity {
                 apiManager = new NullApiManager();
             }
             else if(getMylogcation().equals("서울특별시") || getMylogcation().equals("Seoul")){
-                apiManager = new SeoulApiManager(getApplicationContext(),0);
+                apiManager = new SeoulEngApiManager(getApplicationContext(),0);
             }
             apiManager.getApi();
         }
@@ -106,7 +107,7 @@ public class SplashActivity extends Activity {
     //api 받아오기 여부
     private boolean getUsingApi(){
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-        return pref.getBoolean("usingApi", false);
+        return pref.getBoolean("usingApi", true);
 
     }
 
