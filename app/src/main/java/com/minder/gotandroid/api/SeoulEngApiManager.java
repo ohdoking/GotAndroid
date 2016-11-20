@@ -329,12 +329,12 @@ public class SeoulEngApiManager implements ApiManager {
         if(c.equals("A0502")){
             return "food";
         }else if(c.equals("A0208")){
-            return "event"; //�̼�
+            return "exhibition"; //�̼�
         }
         else if(c.equals("A0207")){
             return "festival"; //����
         }else if(c.equals("A0201") || c.equals("A0202") || c.equals("A0205")){
-            return "tour"; // ������
+            return "sight"; // ������
         }
         else{
             return "etc";
