@@ -91,7 +91,7 @@ public class SettingActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				Uri uri = Uri.parse("mailto:sksms4687@naver.com");
+				Uri uri = Uri.parse("mailto:ohdoking@gmail.com");
 				Intent it = new Intent(Intent.ACTION_SENDTO, uri);
 				startActivity(Intent.createChooser(it, "Choose an Email client"));
 			}
@@ -173,7 +173,6 @@ public class SettingActivity extends Activity {
 	private String getMylogcation() {
 		String cityName = null;
 		gpsInfo = new GpsInfo(SettingActivity.this);
-		// GPS �������� ��������
 		if (gpsInfo.isGetLocation()) {
 
 			double latitude = gpsInfo.getLatitude();
@@ -189,10 +188,6 @@ public class SettingActivity extends Activity {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-
-			String s = longitude + "\n" + latitude + "\n\n������ ���� ���ø� : " + cityName;
-
-			Log.i("ohdokingLocation", s);
 
 		}
 		return cityName;
