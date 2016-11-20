@@ -62,15 +62,15 @@ public class SettingActivity extends Activity {
 		RelativeLayout layout_made = (RelativeLayout) findViewById(R.id.layout_made);
 		ImageButton mailBtn = (ImageButton) findViewById(R.id.mailBtn);
 		ImageButton tutorialBtn = (ImageButton) findViewById(R.id.tutorialBtn);
-		ToggleButton dataSwitch = (ToggleButton) findViewById(R.id.dataSwitch);
+//		ToggleButton dataSwitch = (ToggleButton) findViewById(R.id.dataSwitch);
 
 
-
-		if (getUsingApi() == true) {
-			dataSwitch.setChecked(true);
-		} else {
-			dataSwitch.setChecked(false);
-		}
+//
+//		if (getUsingApi() == true) {
+//			dataSwitch.setChecked(true);
+//		} else {
+//			dataSwitch.setChecked(false);
+//		}
 
 		LayoutInflater inflater = (LayoutInflater) getActionBar().getThemedContext()
 				.getSystemService(LAYOUT_INFLATER_SERVICE);
@@ -145,28 +145,28 @@ public class SettingActivity extends Activity {
 			}
 		});
 
-		dataSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
-
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-				if (getUsingApi() == true) {
-					saveUsingApi(false);
-					myDB.deleteTable();
-					retIntent.putExtra("usingApi", "false");
-				} else {
-					saveUsingApi(true);
-
-					if (getMylogcation() == null) {
-						apiManager = new NullApiManager();
-					} else if (getMylogcation().equals("서울특별시") || getMylogcation().equals("Seoul")) {
-						apiManager = new SeoulEngApiManager(SettingActivity.this, 1);
-					}
-					apiManager.getApi();
-				}
-
-			}
-
-		});
+//		dataSwitch.setOnCheckedChangeListener(new Switch.OnCheckedChangeListener() {
+//
+//			@Override
+//			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//				if (getUsingApi() == true) {
+//					saveUsingApi(false);
+//					myDB.deleteTable();
+//					retIntent.putExtra("usingApi", "false");
+//				} else {
+//					saveUsingApi(true);
+//
+//					if (getMylogcation() == null) {
+//						apiManager = new NullApiManager();
+//					} else if (getMylogcation().equals("서울특별시") || getMylogcation().equals("Seoul")) {
+//						apiManager = new SeoulEngApiManager(SettingActivity.this, 1);
+//					}
+//					apiManager.getApi();
+//				}
+//
+//			}
+//
+//		});
 
 	}
 
@@ -200,7 +200,7 @@ public class SettingActivity extends Activity {
 	 */
 	private boolean getUsingApi() {
 		SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-		return pref.getBoolean("usingApi", false);
+		return pref.getBoolean("usingApi", true);
 
 	}
 

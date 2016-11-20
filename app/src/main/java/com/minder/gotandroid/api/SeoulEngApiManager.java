@@ -2,7 +2,6 @@ package com.minder.gotandroid.api;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
-import android.util.Log;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -327,7 +326,6 @@ public class SeoulEngApiManager implements ApiManager {
 
     }
     String checkCategory(String c){
-        Log.i("category",c);
         if(c.equals("A0502")){
             return "food";
         }else if(c.equals("A0208")){
