@@ -338,6 +338,13 @@ public class SwipeActivity extends Activity {
 		tmapview = new TMapView(this);
 		tmapview.setSKPMapApiKey(getResources().getString(R.string.t_map_key));
 		tmapview.setLanguage(TMapView.LANGUAGE_ENGLISH);
+		tmapview.setMarkerRotate(true);
+		tmapview.setPathRotate(true);
+		tmapview.setPOIRotate(true);
+		tmapview.setTileType(TMapView.TILETYPE_ENGLISHTILE);
+		tmapview.setCompassMode(true);
+		tmapview.setSightVisible(true);
+		tmapview.setBicycleInfo(true);
 
 		contentView.removeAllViews();
 		contentView.addView(tmapview, new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT));
