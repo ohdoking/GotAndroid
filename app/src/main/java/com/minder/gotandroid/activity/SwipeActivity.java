@@ -327,7 +327,7 @@ public class SwipeActivity extends Activity {
 
 				tmapview.setCenterPoint(dream.getLon(), dream.getLat(), true);
 				TMapMarkerItem m = tmapview.getMarkerItemFromID(dream.getId().toString());
-				m.setCanShowCallout(true);
+				m.setAutoCalloutVisible(true);
 			}
 		});
 
