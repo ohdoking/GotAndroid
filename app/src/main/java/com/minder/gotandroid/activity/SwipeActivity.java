@@ -55,7 +55,9 @@ import com.minder.gotandroid.model.AlarmReceiver;
 import com.minder.gotandroid.model.GPSTracker;
 import com.minder.gotandroid.model.PushEvent;
 import com.skp.Tmap.TMapMarkerItem;
+import com.skp.Tmap.TMapMarkerItem2;
 import com.skp.Tmap.TMapPoint;
+import com.skp.Tmap.TMapTapi;
 import com.skp.Tmap.TMapView;
 
 import java.util.ArrayList;
@@ -108,6 +110,10 @@ public class SwipeActivity extends Activity {
 	//	add tmap
 	LinearLayout contentView;
 	TMapView tmapview;
+	TMapTapi tmaptapi;
+
+	//my location
+	Location location;
 
 
 	// add weather
@@ -328,6 +334,7 @@ public class SwipeActivity extends Activity {
 				tmapview.setCenterPoint(dream.getLon(), dream.getLat(), true);
 				TMapMarkerItem m = tmapview.getMarkerItemFromID(dream.getId().toString());
 				m.setAutoCalloutVisible(true);
+
 			}
 		});
 
@@ -345,6 +352,9 @@ public class SwipeActivity extends Activity {
 		tmapview.setCompassMode(true);
 		tmapview.setSightVisible(true);
 		tmapview.setBicycleInfo(true);
+
+		tmaptapi = new TMapTapi(this);
+		tmaptapi.setSKPMapAuthentication(getResources().getString(R.string.t_map_key));
 
 		contentView.removeAllViews();
 		contentView.addView(tmapview, new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT));
@@ -438,7 +448,7 @@ public class SwipeActivity extends Activity {
 					TMapMarkerItem markeritem2 = new TMapMarkerItem();
 					TMapPoint tpoint = new TMapPoint(dream.getLat(), dream.getLon());
 					markeritem2.setTMapPoint(tpoint);
-					Bitmap bitmap = BitmapFactory.decodeResource(getResources(),id);
+					final Bitmap bitmap = BitmapFactory.decodeResource(getResources(),id);
 					markeritem2.setIcon(bitmap);
 					Log.i("ohdoking-test",dream.getId().toString());
 					markeritem2.setID(dream.getId().toString());
@@ -450,10 +460,31 @@ public class SwipeActivity extends Activity {
 					markeritem2.setCalloutTitle(dream.getTodo());
 					markeritem2.setCalloutSubTitle(dream.getMemo());
 					tmapview.addMarkerItem(dream.getId().toString(), markeritem2);
+
+					final Bitmap bitmap2 = BitmapFactory.decodeResource(getResources(),R.drawable.setting5);
+					markeritem2.setCalloutRightButtonImage(bitmap2);
+					tmapview.setOnCalloutRightButtonClickListener(new TMapView.OnCalloutRightButtonClickCallback() {
+						@Override
+						public void onCalloutRightButton(TMapMarkerItem tMapMarkerItem) {
+							boolean isTmapApp = tmaptapi.isTmapApplicationInstalled();
+							if(isTmapApp){
+								TMapPoint tMapPoint = tmapview.convertPointToGps(tMapMarkerItem.getPositionX(), tMapMarkerItem.getPositionY());
+								tmaptapi.invokeRoute(tMapMarkerItem.getName(), (float)tMapPoint.getLongitude(), (float)tMapPoint.getLatitude());
+							}
+							else{
+								ArrayList<String> tmapDonwUrl = tmaptapi.getTMapDownUrl();
+								Intent i = new Intent(android.content.Intent.ACTION_VIEW);
+								i.setData(Uri.parse(tmapDonwUrl.get(0)));
+								startActivity(i);
+							}
+
+
+						}
+					});
 				}
 			}
 
-			Location location = gpsTracker.getLocation();
+			location = gpsTracker.getLocation();
 			if (location != null) {
 				// Current Location
 				tmapview.setCenterPoint(location.getLongitude(), location.getLatitude(), true);
