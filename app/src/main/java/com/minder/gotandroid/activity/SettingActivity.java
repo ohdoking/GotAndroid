@@ -11,11 +11,13 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -50,39 +52,23 @@ public class SettingActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_setting);
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+			getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+			getWindow().setStatusBarColor(getResources().getColor(R.color.white));
+		}
+
 		retIntent = new Intent();
 
 		myDB = new MyDB(getApplicationContext());
 
 		RelativeLayout layout_mail = (RelativeLayout) findViewById(R.id.layout_mail);
 		RelativeLayout layout_tutorial = (RelativeLayout) findViewById(R.id.layout_tutorial);
-		RelativeLayout layout_data = (RelativeLayout) findViewById(R.id.layout_data);
-		RelativeLayout layout_movie = (RelativeLayout) findViewById(R.id.layout_movie);
 		RelativeLayout layout_made = (RelativeLayout) findViewById(R.id.layout_made);
-
-
-		ImageButton logoBtn = (ImageButton) findViewById(R.id.logoBtn);
 		ImageButton mailBtn = (ImageButton) findViewById(R.id.mailBtn);
 		ImageButton tutorialBtn = (ImageButton) findViewById(R.id.tutorialBtn);
-		ImageButton movieBtn = (ImageButton) findViewById(R.id.movieBtn);
 		ToggleButton dataSwitch = (ToggleButton) findViewById(R.id.dataSwitch);
-
-		TextView tv_currentVersion = (TextView) findViewById(R.id.tv_currentVersion);
-//		TextView tv_newestVersion = (TextView) findViewById(R.id.tv_newestVersion);
-
-		PackageManager manager = this.getPackageManager();
-		try {
-			PackageInfo info = manager.getPackageInfo(this.getPackageName(), 0);
-			//String packageName = info.packageName;
-			//int versionCode = info.versionCode;
-			String versionName = info.versionName;
-
-			tv_currentVersion.setText("v "+versionName);
-//			tv_newestVersion.setText("v "+versionName);
-
-		} catch (PackageManager.NameNotFoundException e) {
-			// TODO Auto-generated catch block
-		}
 
 
 
@@ -127,16 +113,6 @@ public class SettingActivity extends Activity {
 			}
 		});
 
-		layout_movie.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				// TODO Auto-generated method stub
-				Intent it = new Intent(Intent.ACTION_VIEW, Uri.parse("https://youtu.be/7z0ETQUgYDQ"));
-				startActivity(it);
-			}
-		});
-
 		layout_made.setOnClickListener(new View.OnClickListener() {
 
 			@Override
@@ -146,22 +122,12 @@ public class SettingActivity extends Activity {
 			}
 		});
 
-
 		iv_back.setOnClickListener(new View.OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				finish();
-			}
-		});
-
-		logoBtn.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent it = new Intent(SettingActivity.this, SwipeActivity.class);
-				startActivity(it);
 			}
 		});
 
@@ -181,15 +147,6 @@ public class SettingActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent it = new Intent(SettingActivity.this, ViewPagerActivity.class);
-				startActivity(it);
-			}
-		});
-
-		movieBtn.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				Intent it = new Intent(Intent.ACTION_VIEW, Uri.parse("https://youtu.be/7z0ETQUgYDQ"));
 				startActivity(it);
 			}
 		});
@@ -228,7 +185,6 @@ public class SettingActivity extends Activity {
 			double latitude = gpsInfo.getLatitude();
 			double longitude = gpsInfo.getLongitude();
 
-			/*---------- ���ø� �������� ----------- */
 			Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
 			List<Address> addresses;
 			try {
@@ -244,9 +200,6 @@ public class SettingActivity extends Activity {
 
 			Log.i("ohdokingLocation", s);
 
-		} else {
-			// GPS �� �����Ҽ� �����Ƿ�
-			// gpsInfo.showSettingsAlert();
 		}
 		return cityName;
 	}
@@ -256,15 +209,12 @@ public class SettingActivity extends Activity {
 	 *
 	 * @return
 	 */
-
-	// api �޾ƿ��� ����
 	private boolean getUsingApi() {
 		SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
 		return pref.getBoolean("usingApi", false);
 
 	}
 
-	// api �޾ƿ��� ���� �����ϱ�
 	private void saveUsingApi(Boolean value) {
 		SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
 		SharedPreferences.Editor editor = pref.edit();

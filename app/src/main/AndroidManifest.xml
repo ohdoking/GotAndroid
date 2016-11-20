@@ -39,12 +39,11 @@
         android:theme="@style/Theme.MyAppTheme">
         <activity
             android:name=".activity.SplashActivity"
-            android:label="@string/app_name" >
-        </activity>
+            android:label="@string/app_name"></activity>
         <activity
             android:name=".activity.WriteActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme" >
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -55,12 +54,11 @@
         </activity>
         <activity
             android:name=".activity.FilterAcitivy"
-            android:label="@string/app_name" >
-        </activity>
+            android:label="@string/app_name"></activity>
         <activity
             android:name=".activity.SwipeActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme" >
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -73,40 +71,35 @@
         </activity>
 
         <!--<meta-data-->
-            <!--android:name="com.google.android.geo.API_KEY"-->
-            <!--android:value="@string/google_key" >-->
+        <!--android:name="com.google.android.geo.API_KEY"-->
+        <!--android:value="@string/google_key" >-->
         <!--</meta-data>-->
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" >
-        </meta-data>
+            android:value="@integer/google_play_services_version"></meta-data>
 
         <activity
             android:name=".activity.CreateNotificationActivity"
-            android:label="@string/title_activity_create_notification" >
-        </activity>
+            android:label="@string/title_activity_create_notification"></activity>
         <activity
             android:name=".activity.AndroidGPSTrackingActivity"
-            android:label="@string/title_activity_create_notification" >
-        </activity>
-        <activity android:name=".activity.SettingActivity" >
-        </activity>
+            android:label="@string/title_activity_create_notification"></activity>
+        <activity
+            android:name=".activity.SettingActivity"
+            android:label="@string/settingActivity"/>
         <activity
             android:name=".dialog.DialogActivity"
             android:label="@string/app_name"
-            android:theme="@android:style/Theme.Holo.Light.Dialog" >
-        </activity>
+            android:theme="@android:style/Theme.Holo.Light.Dialog"></activity>
         <activity
             android:name=".dialog.DeleteActivity"
             android:label="완료"
-            android:theme="@android:style/Theme.Holo.Light.Dialog" >
-        </activity>
+            android:theme="@android:style/Theme.Holo.Light.Dialog"></activity>
         <activity
             android:name=".activity.ViewPagerActivity"
-            android:label="@string/app_name" >
-        </activity>
+            android:label="@string/app_name"></activity>
 
-        <receiver android:name=".model.AlarmReceiver" >
+        <receiver android:name=".model.AlarmReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -115,7 +108,7 @@
         <!-- Will not be called unless the application explicitly enables it -->
         <receiver
             android:name=".model.DeviceBootReceiver"
-            android:enabled="false" >
+            android:enabled="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
@@ -123,13 +116,11 @@
 
         <service
             android:name=".model.PushEvent"
-            android:enabled="true" >
-        </service>
+            android:enabled="true"></service>
 
         <activity
             android:name=".activity.MadeActivity"
-            android:label="@string/title_activity_made" >
-        </activity>
+            android:label="@string/title_activity_made"></activity>
     </application>
 
 </manifest>

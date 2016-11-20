@@ -43,6 +43,7 @@
                 android:animateLayoutChanges="true"
                 android:divider="@null"
                 android:dividerHeight="0dp"
+                android:descendantFocusability="blocksDescendants"
                 android:fadeScrollbars="true"
                 android:smoothScrollbar="true" >
             </ListView>

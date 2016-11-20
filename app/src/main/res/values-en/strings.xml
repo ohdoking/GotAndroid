@@ -38,4 +38,12 @@
 
     <string name="category_filter">카테고리 필터</string>
     <string name="category_1">선택한 카테고리만 메인에 보여집니다.</string>
+
+
+    <string name="ask">문의하기</string>
+    <string name="tutorial">Tutorial</string>
+    <string name="creator">Creator</string>
+    <string name="download">Download public API</string>
+
+    <string name="settingActivity">Information</string>
 </resources>
