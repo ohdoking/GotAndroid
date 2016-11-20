@@ -126,10 +126,90 @@ public class SwipeActivity extends Activity {
 	ImageView imWeather;
 	Handler msgHandler = new Handler() {
 		public void dispatchMessage(Message msg) {
-			tvCounty.setText(resultCounty);
+			// tvCounty.setText(resultCounty);
 			tvTmax.setText(resultTmax);
 			tvTmin.setText(resultTmin);
-			Log.e("tag",resultCode);
+			Log.e("tag", resultCounty);
+			switch (resultCounty) {
+				case "도봉구":
+					tvCounty.setText("Dobong-gu");
+					break;
+				case "노원구":
+					tvCounty.setText("Nowon-gu");
+					break;
+				case "강북구":
+					tvCounty.setText("Gangbuk-gu");
+					break;
+				case "성북구":
+					tvCounty.setText("Seongbuk-gu");
+					break;
+				case "중랑구":
+					tvCounty.setText("Jungnang-gu");
+					break;
+				case "동대문구":
+					tvCounty.setText("Dongdaemun-gu");
+					break;
+				case "종로구":
+					tvCounty.setText("Jongno-gu");
+					break;
+				case "은평구":
+					tvCounty.setText("Eunpyeong-gu");
+					break;
+				case "서대문구":
+					tvCounty.setText("Seodaemun-gu");
+					break;
+				case "중구":
+					tvCounty.setText("Jung-gu");
+					break;
+				case "성동구":
+					tvCounty.setText("Seongdong-gu");
+					break;
+				case "광진구":
+					tvCounty.setText("Gwangjin-gu");
+					break;
+				case "마포구":
+					tvCounty.setText("Mapo-gu");
+					break;
+				case "용산구":
+					tvCounty.setText("Yongsan-gu");
+					break;
+				case "강동구":
+					tvCounty.setText("Gangdong-gu");
+					break;
+				case "송파구":
+					tvCounty.setText("Songpa-gu");
+					break;
+				case "강남구":
+					tvCounty.setText("Gangnam-gu");
+					break;
+				case "서초구":
+					tvCounty.setText("Seocho-gu");
+					break;
+				case "관악구":
+					tvCounty.setText("Gwanak-gu");
+					break;
+				case "동작구":
+					tvCounty.setText("Dongjak-gu");
+					break;
+				case "금천구":
+					tvCounty.setText("Geumcheon-gu");
+					break;
+				case "영등포구":
+					tvCounty.setText("Yeongdeungpo-gu");
+					break;
+				case "구로구":
+					tvCounty.setText("Guro-gu");
+					break;
+				case "양천구":
+					tvCounty.setText("Yangcheon-gu");
+					break;
+				case "강서구":
+					tvCounty.setText("Gangseo-gu");
+					break;
+				default:
+					tvCounty.setText("Jung-gu");
+					break;
+			}
 			switch (resultCode) {
 				case "SKY_D01":
 					// 맑음
@@ -257,14 +337,15 @@ public class SwipeActivity extends Activity {
 		// tmap init
 		tmapview = new TMapView(this);
 		tmapview.setSKPMapApiKey(getResources().getString(R.string.t_map_key));
+		tmapview.setLanguage(TMapView.LANGUAGE_ENGLISH);
 
 		contentView.removeAllViews();
 		contentView.addView(tmapview, new LinearLayout.LayoutParams(RelativeLayout.LayoutParams.FILL_PARENT, RelativeLayout.LayoutParams.FILL_PARENT));
 
 		initMap();
 
-		// add weather
-		commWithOpenApiServer();
+
+//		commWithOpenApiServer();
 		tvCounty = (TextView) findViewById(R.id.tvCounty);
 		tvTmax = (TextView) findViewById(R.id.tvTmax);
 		tvTmin = (TextView) findViewById(R.id.tvTmin);
@@ -370,8 +451,13 @@ public class SwipeActivity extends Activity {
 			if (location != null) {
 				// Current Location
 				tmapview.setCenterPoint(location.getLongitude(), location.getLatitude(), true);
+				// add weather
+				commWithOpenApiServer(location.getLongitude(), location.getLatitude());
 				tmapview.setTrackingMode(true);
 
+			}
+			else{
+				commWithOpenApiServer(0.0, 0.0);
 			}
 		}
 	}
@@ -664,13 +750,19 @@ public class SwipeActivity extends Activity {
 	}
 
 	// add weather
-	public void commWithOpenApiServer() {
+	public void commWithOpenApiServer(Double lon, Double lat) {
 		api = new APIRequest();
 		APIRequest.setAppKey("d2401464-9537-30ef-985a-65d90e883c02");
+
 		param = new HashMap<String, Object>();
 		param.put("version","1");
-		param.put("lat","37.5714000000");
-		param.put("lon","126.9658000000");
+		if(lat == 0.0){
+			param.put("lat",37.5714000000);
+			param.put("lon",126.9658000000);
+		}else{
+			param.put("lat",lat);
+			param.put("lon",lon);
+		}
 		param.put("stnid","108");
 		// requestBundle
 		requestBundle = new RequestBundle();
