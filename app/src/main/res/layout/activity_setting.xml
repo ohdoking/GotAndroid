@@ -156,50 +156,6 @@
             android:layout_height="0.1dp"
             android:background="#000000" />
 
-        <!--<RelativeLayout-->
-            <!--android:id="@+id/layout_data"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="5dp">-->
-
-            <!--<ImageView-->
-                <!--android:id="@+id/iv_data"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_alignParentLeft="true"-->
-                <!--android:layout_alignParentTop="true"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_marginLeft="10dp"-->
-                <!--android:background="#00000000"-->
-                <!--android:src="@drawable/setting5" />-->
-
-            <!--<TextView-->
-                <!--android:id="@+id/textView6"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_marginLeft="20dp"-->
-                <!--android:layout_toRightOf="@+id/iv_data"-->
-                <!--android:text="@string/download" />-->
-
-            <!--<ToggleButton-->
-                <!--android:id="@+id/dataSwitch"-->
-                <!--android:layout_width="40dp"-->
-                <!--android:layout_height="23dp"-->
-                <!--android:layout_centerVertical="true"-->
-                <!--android:layout_alignTop="@+id/textView6"-->
-                <!--android:layout_alignParentEnd="true"-->
-                <!--android:layout_marginRight="10dp"-->
-                <!--android:background="@drawable/toggle_selector"-->
-                <!--android:checked="false"-->
-                <!--android:textOff=""-->
-                <!--android:textOn="" />-->
-        <!--</RelativeLayout>-->
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="0.1dp"
-            android:background="#000000" />
     </LinearLayout>
 
     <LinearLayout
