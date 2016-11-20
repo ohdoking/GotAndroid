@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">PIN Minder</string>
+    <string name="app_name">GO.T</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_filter_acitivy">FilterAcitivy</string>
@@ -22,25 +22,25 @@
     <string name="title_activity_made">MadeActivity</string>
 
 
-    <string name="title_gps_setting">위치 서비스 설정</string>
-    <string name="memo_gps_setting">"GOT 알림을 받기 위해서는 내 위치 정보가 필요합니다. 단말기의 설정에서 '위치 서비스' 사용을 허용해주세요"</string>
-    <string name="toast_api_on_off">"우리지역 공공데이터 받아오기는 설정에서  ON/OFF 하실 수 있습니다."</string>
+    <string name="title_gps_setting">Location Services set-up</string>
+    <string name="memo_gps_setting">"Your location information is required to receive GO.T notifications. Please allow "Location Services" in your device's settings."</string>
+    <string name="toast_api_on_off">"You can on/off Seoul Tourism Public Data Acquisition at set-up page."</string>
 
-    <string name="cancel">취소</string>
-    <string name="setting">설정하기</string>
-    <string name="ok">확인</string>
+    <string name="cancel">Cancel</string>
+    <string name="setting">Set-Up</string>
+    <string name="ok">Confirm</string>
 
-    <string name="toast_back">"\'뒤로\'버튼을 한번 더 누르시면 종료됩니다."</string>
+    <string name="toast_back">"Press \'Back\' button again to exit.""</string>
 
-    <string name="search_engine_1">핀 위의 창을 클릭하시면</string>
-    <string name="search_engine_2">구글 검색창으로 이동합니다.</string>
-    <string name="search_engine_3">다시 물어보지 않기</string>
+    <string name="search_engine_1">Click on the window above the pin</string>
+    <string name="search_engine_2">to go to the Google search window.</string>
+    <string name="search_engine_3">Do not ask again</string>
 
-    <string name="category_filter">카테고리 필터</string>
-    <string name="category_1">선택한 카테고리만 메인에 보여집니다.</string>
+    <string name="category_filter">Category Filter</string>
+    <string name="category_1">Only selected categories are shown in main.</string>
 
 
-    <string name="ask">문의하기</string>
+    <string name="ask">Contact us</string>
     <string name="tutorial">Tutorial</string>
     <string name="creator">Creator</string>
     <string name="download">Download public API</string>

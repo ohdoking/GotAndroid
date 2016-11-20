@@ -52,7 +52,7 @@ public class SettingActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_setting);
-		
+
 		retIntent = new Intent();
 
 		myDB = new MyDB(getApplicationContext());

@@ -23,7 +23,7 @@
             android:gravity="left">
 
             <TextView
-                android:id="@+id/tvCity"
+                android:id="@+id/tvCounty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="MAPO" />
@@ -31,13 +31,22 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="," />
+                android:text=", " />
 
             <TextView
-                android:id="@+id/tvCounty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="SEOUL" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=", " />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="KOREA" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
@@ -49,6 +58,7 @@
                 android:id="@+id/imWeather"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="10dp"
                 android:src="@drawable/weather_01_1" />
 
             <LinearLayout
@@ -61,7 +71,6 @@
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
                     android:orientation="horizontal">
 
                     <TextView

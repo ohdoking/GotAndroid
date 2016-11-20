@@ -111,7 +111,6 @@ public class SwipeActivity extends Activity {
 
 
 	// add weather
-	TextView tvCity;
 	TextView tvCounty;
 	TextView tvTmax;
 	TextView tvTmin;
@@ -120,7 +119,6 @@ public class SwipeActivity extends Activity {
 	String URL = "http://apis.skplanetx.com/weather/summary";
 	Map<String, Object> param;
 	String hndResult="";
-	String resultCity="";
 	String resultCounty="";
 	String resultCode="";
 	String resultTmax="";
@@ -128,7 +126,6 @@ public class SwipeActivity extends Activity {
 	ImageView imWeather;
 	Handler msgHandler = new Handler() {
 		public void dispatchMessage(Message msg) {
-			tvCity.setText(resultCity);
 			tvCounty.setText(resultCounty);
 			tvTmax.setText(resultTmax);
 			tvTmin.setText(resultTmin);
@@ -287,7 +284,6 @@ public class SwipeActivity extends Activity {
 
 		// add weather
 		commWithOpenApiServer();
-		tvCity = (TextView) findViewById(R.id.tvCity);
 		tvCounty = (TextView) findViewById(R.id.tvCounty);
 		tvTmax = (TextView) findViewById(R.id.tvTmax);
 		tvTmin = (TextView) findViewById(R.id.tvTmin);
@@ -718,7 +714,6 @@ public class SwipeActivity extends Activity {
 		@Override
 		public void onComplete(ResponseMessage result) {
 			// inform to messagehandler
-			resultCity = (String) result.getResultHashmap().get("city");
 			resultCounty = (String) result.getResultHashmap().get("county");
 			resultCode = (String) result.getResultHashmap().get("today_code");
 			resultTmin = (String) result.getResultHashmap().get("today_tmax");
