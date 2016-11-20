@@ -9,14 +9,14 @@
         android:id="@+id/settingImg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_gravity="center_vertical"
         android:layout_weight="1"
         android:background="#00000000"
         android:gravity="left"
-        android:paddingBottom="8dp"
+        android:paddingBottom="15dp"
         android:paddingRight="20dp"
-        android:paddingTop="8dp"
-        android:src="@drawable/settingicon" />
+        android:paddingTop="15dp"
+        android:src="@drawable/setting_button" />
 
     <ImageView
         android:id="@+id/imageView1"

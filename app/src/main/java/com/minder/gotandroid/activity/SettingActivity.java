@@ -129,7 +129,7 @@ public class SettingActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
-				Uri uri = Uri.parse("mailto:sksms4687@naver.com");
+				Uri uri = Uri.parse("mailto:ohdoking@gmail.com");
 				Intent it = new Intent(Intent.ACTION_SENDTO, uri);
 				startActivity(Intent.createChooser(it, "Choose an Email client"));
 

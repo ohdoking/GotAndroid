@@ -36,7 +36,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="SEOUL" />
+                android:text="Seoul" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -46,7 +46,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="KOREA" />
+                android:text="Korea" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
