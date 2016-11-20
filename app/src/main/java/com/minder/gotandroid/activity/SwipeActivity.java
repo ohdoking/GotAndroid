@@ -207,6 +207,7 @@ public class SwipeActivity extends Activity {
 					tvCounty.setText("Gangseo-gu");
 					break;
 				default:
+					tvCounty.setText("Jung-gu");
 					break;
 			}
 			switch (resultCode) {
