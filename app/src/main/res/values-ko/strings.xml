@@ -43,4 +43,8 @@
     <string name="download">공공API 다운로드</string>
 
     <string name="settingActivity">Information</string>
+
+    <string name="temp_unit">°C</string>
+    <string name="temp_high">최고온도</string>
+    <string name="temp_low">최저온도</string>
 </resources>
