@@ -344,8 +344,8 @@ public class SwipeActivity extends Activity {
 
 		initMap();
 
-		// add weather
-		commWithOpenApiServer();
+
+//		commWithOpenApiServer();
 		tvCounty = (TextView) findViewById(R.id.tvCounty);
 		tvTmax = (TextView) findViewById(R.id.tvTmax);
 		tvTmin = (TextView) findViewById(R.id.tvTmin);
@@ -451,12 +451,13 @@ public class SwipeActivity extends Activity {
 			if (location != null) {
 				// Current Location
 				tmapview.setCenterPoint(location.getLongitude(), location.getLatitude(), true);
-
-
-
-
+				// add weather
+				commWithOpenApiServer(location.getLongitude(), location.getLatitude());
 				tmapview.setTrackingMode(true);
 
+			}
+			else{
+				commWithOpenApiServer(0.0, 0.0);
 			}
 		}
 	}
@@ -749,14 +750,19 @@ public class SwipeActivity extends Activity {
 	}
 
 	// add weather
-	public void commWithOpenApiServer() {
+	public void commWithOpenApiServer(Double lon, Double lat) {
 		api = new APIRequest();
 		APIRequest.setAppKey("d2401464-9537-30ef-985a-65d90e883c02");
 
 		param = new HashMap<String, Object>();
 		param.put("version","1");
-		param.put("lat","37.5714000000");
-		param.put("lon","126.9658000000");
+		if(lat == 0.0){
+			param.put("lat",37.5714000000);
+			param.put("lon",126.9658000000);
+		}else{
+			param.put("lat",lat);
+			param.put("lon",lon);
+		}
 		param.put("stnid","108");
 		// requestBundle
 		requestBundle = new RequestBundle();
